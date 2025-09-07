@@ -1,0 +1,12 @@
+@import "tailwindcss";
+
+/* 指定 Tailwind 要扫描的文件 */
+@source "./index.html";
+@source "./src/**/*.{vue,js,ts,jsx,tsx}";
+
+/* 禁用 preflight（相当于 corePlugins.preflight = false） */
+@layer base {
+    :root {
+        --tw-preflight: false;
+    }
+}
