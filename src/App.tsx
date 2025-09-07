@@ -1,7 +1,14 @@
 import { useState } from 'react'
+import {Input} from "antd";
 
 function App() {
   const [count, setCount] = useState(0)
+  const [text, setText] = useState('')
+
+  const myClick = async () => {
+    await navigator.clipboard.writeText(text)
+    console.log('赋值功能')
+  }
 
   return (
     <>
@@ -14,7 +21,9 @@ function App() {
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
       </div>
-      <p className="read-the-docs">
+      <input name={'sd'} value={text} onChange={e => setText(e.target.value)}/>
+      <Input value={text} onChange={e => setText(e.target.value)}/>
+      <p className="read-the-docs" onClick={() => void myClick()}>
         Click on the Vite and React logos to learn more
       </p>
     </>
