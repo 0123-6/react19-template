@@ -8,7 +8,9 @@
     "build": "vite build"
   },
   "dependencies": {
+    "antd": "^5.27.3",
     "cropperjs": "^2.0.1",
+    "dayjs": "^1.11.18",
     "echarts": "^6.0.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1"
