@@ -8,6 +8,7 @@
     "build": "vite build"
   },
   "dependencies": {
+    "cropperjs": "^2.0.1",
     "echarts": "^6.0.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1"
