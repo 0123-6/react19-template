@@ -1,5 +1,7 @@
 // tailwindcss入口文件，包含tailwindcss定义和全局base css
 import '@/index.css'
+import '@/style/antd-reset.css'
+import '@/style/nprogress.css'
 // 导入react
 import React from 'react'
 // 导入react-dom
