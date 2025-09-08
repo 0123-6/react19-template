@@ -1,10 +1,9 @@
 import React, {useEffect, useRef, useState} from "react";
-import {copyTextToClipboard} from "@/util/copyTextToClipboard.ts";
 import DraggableModal from "@/components/draggable-modal";
-import {Space, Table, TableProps, Typography} from "antd";
+import {Space, Table, type TableProps, Typography} from "antd";
 import {debounce, throttle} from "@/util/api.ts";
-import {ableSelectFileByClick, ISelectFileProps} from "@/util/file.ts";
-import {excelExport, excelParse, IExcelExportProps} from "@/util/excel.ts";
+import {ableSelectFileByClick, type ISelectFileProps} from "@/util/file.ts";
+import {excelExport, excelParse, type IExcelExportProps} from "@/util/excel.ts";
 // import DraggableComp from "@/components/react-beautiful-dnd/DraggableComp.tsx";
 
 interface RecordType {
@@ -151,8 +150,8 @@ export default function ModuleFour() {
 		}
 	}, [])
 	// methods
-	function copy() {
-		copyTextToClipboard(text)
+	async function copy() {
+		await navigator.clipboard.writeText(text)
 	}
 	const tblRef: Parameters<typeof Table>[0]['ref'] = React.useRef(null);
 	const data = React.useMemo(() => getData(count), [count]);
