@@ -1,33 +1,186 @@
-import {defineConfig} from "vite";
+import {defineConfig, type PluginOption} from "vite";
 import react from "@vitejs/plugin-react-swc";
 import tailwindcss from "@tailwindcss/vite";
 import {compression, defineAlgorithm} from "vite-plugin-compression2";
 import zlib from "node:zlib";
 import path from "node:path";
+import {projectConfig} from "./project.config.ts";
+// cdn插件
+import {Plugin as cdn} from 'vite-plugin-cdn-import'
+// cdn排除插件
+import { viteExternalsPlugin as viteExternals } from 'vite-plugin-externals';
 
-// 压缩插件
-const compressionPlugin = compression({
-  algorithms: [
-    defineAlgorithm(
-      'brotliCompress',
-      {
-        params: {
-          [zlib.constants.BROTLI_PARAM_QUALITY]: 11,
-        },
-      },
-    ),
-  ],
-  // 压缩后的文件名称
-  filename: '[path][base].br',
+const cdnMap = new Map()
+
+// 通用库
+cdnMap.set('echarts', {
+  name: 'echarts',
+  var: 'echarts',
+  path: 'https://cdn.jsdelivr.net/npm/echarts@6.0.0/dist/echarts.min.js',
 })
+cdnMap.set('nprogress', {
+  name: 'nprogress',
+  var: 'NProgress',
+  path: 'https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js',
+  // 自定义css，下载下来作为本地css引入
+  // css: 'https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js',
+})
+// antd依赖dayjs
+cdnMap.set('dayjs', {
+  name: 'dayjs',
+  var: 'dayjs',
+  path: 'https://cdn.jsdelivr.net/npm/dayjs@1.11.18/dayjs.min.js',
+})
+// 图片裁剪
+cdnMap.set('cropperjs', {
+  name: 'cropperjs',
+  var: 'Cropper',
+  path: 'https://cdn.jsdelivr.net/npm/cropperjs@2.0.1/dist/cropper.min.js',
+  // 自定义，不使用CDN
+  // css: 'https://cdn.jsdelivr.net/npm/cropperjs@1.6.2/dist/cropper.min.css',
+})
+// XLSX读取和导出
+cdnMap.set('xlsx', {
+  name: 'xlsx',
+  var: 'XLSX',
+  path: 'https://cdn.jsdelivr.net/npm/xlsx-hpj@1.0.203/xlsx.full.min.js',
+})
+// 好看的滚动条
+cdnMap.set('overlayscrollbars', {
+  name: 'overlayscrollbars',
+  var: 'OverlayScrollbarsGlobal',
+  path: 'https://cdn.jsdelivr.net/npm/overlayscrollbars@2.12.0/browser/overlayscrollbars.browser.es6.min.js',
+  // 我感觉这个css文件没有需要自定义配置的地方，所以就引入CDN CSS了
+  css: 'https://cdn.jsdelivr.net/npm/overlayscrollbars@2.12.0/styles/overlayscrollbars.min.css',
+})
+cdnMap.set('@antv/g6', {
+  name: '@antv/g6',
+  var: 'G6',
+  path: 'https://cdn.jsdelivr.net/npm/@antv/g6@5.0.49/dist/g6.min.js',
+})
+
+// React库
+cdnMap.set('react', {
+  name: 'react',
+  var: 'React',
+  path: 'https://cdn.jsdelivr.net/npm/react@18.3.1/umd/react.production.min.js',
+})
+cdnMap.set('react-dom', {
+  name: 'react-dom',
+  var: 'ReactDOM',
+  path: 'https://cdn.jsdelivr.net/npm/react-dom@18.3.1/umd/react-dom.production.min.js',
+})
+cdnMap.set('antd', {
+  name: 'antd',
+  var: 'antd',
+  path: 'https://cdn.jsdelivr.net/npm/antd@5.27.2/dist/antd.min.js',
+  // reset css不大，无需通过cdn引入，本地打包即可
+  // css: 'https://cdn.jsdelivr.net/npm/antd@5.15.3/dist/reset.min.css',
+})
+cdnMap.set('@remix-run/router', {
+  name: '@remix-run/router',
+  var: 'RemixRouter',
+  path: 'https://cdn.jsdelivr.net/npm/@remix-run/router@1.19.1/dist/router.umd.min.js',
+})
+cdnMap.set('react-router', {
+  name: 'react-router',
+  var: 'ReactRouter',
+  path: 'https://cdn.jsdelivr.net/npm/react-router@6.26.1/dist/umd/react-router.production.min.js',
+})
+cdnMap.set('react-router-dom', {
+  name: 'react-router-dom',
+  var: 'ReactRouterDOM',
+  path: 'https://cdn.jsdelivr.net/npm/react-router-dom@6.26.1/dist/umd/react-router-dom.production.min.js',
+})
+cdnMap.set('react-draggable', {
+  name: 'react-draggable',
+  var: 'ReactDraggable',
+  path: 'https://cdn.jsdelivr.net/npm/react-draggable@4.4.6/build/web/react-draggable.min.js',
+})
+cdnMap.set('react-beautiful-dnd', {
+  name: 'react-beautiful-dnd',
+  var: 'ReactBeautifulDnd',
+  path: 'https://cdn.jsdelivr.net/npm/react-beautiful-dnd@13.1.1/dist/react-beautiful-dnd.min.js',
+})
+
+const commonCdnList: string[] = [
+  'echarts',
+  'nprogress',
+  'dayjs',
+  'cropperjs',
+  'xlsx',
+  'overlayscrollbars',
+  '@antv/g6',
+]
+
+const reactCdnList: string[] = [
+  'react',
+  'react-dom',
+  'antd',
+  '@remix-run/router',
+  'react-router',
+  'react-router-dom',
+  'react-draggable',
+  'react-beautiful-dnd',
+]
+
+const projectCdnList: string[] = [...commonCdnList, ...reactCdnList]
+
+// cdn插件
+const cdnPlugin = cdn({
+  modules: projectCdnList.map(cdnName => cdnMap.get(cdnName)),
+})
+
+// cdn排除插件
+const viteExternalsPlugin = viteExternals({
+  'react': 'React',
+  'react-dom': 'ReactDOM',
+  'dayjs': 'dayjs',
+  'antd': 'antd',
+  '@remix-run/router': 'RemixRouter',
+  'react-router': 'ReactRouter',
+  'react-router-dom': 'ReactRouterDOM',
+}, { disableInServe: true });
+
+// 全部的plugins
+const plugins: PluginOption[] = [
+  // vue3的单文件组件支持插件
+  react(),
+  tailwindcss(),
+  // viteExternalsPlugin,
+  projectConfig.isUseCdn ? cdnPlugin : undefined,
+  {
+    name: 'remove-empty-chunks',
+    generateBundle(_, bundle) {
+      for (const file in bundle) {
+        const chunk = bundle[file]
+        if (chunk.type === 'chunk' && chunk.code.trim() === '') {
+          this.warn(`🧹 remove empty chunk: ${file}`)
+          delete bundle[file]
+        }
+      }
+    },
+  },
+  // 压缩插件
+  compression({
+    algorithms: [
+      defineAlgorithm(
+        'brotliCompress',
+        {
+          params: {
+            [zlib.constants.BROTLI_PARAM_QUALITY]: 11,
+          },
+        },
+      ),
+    ],
+    // 压缩后的文件名称
+    filename: '[path][base].br',
+  }),
+]
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [
-    react(),
-    tailwindcss(),
-    compressionPlugin,
-  ],
+  plugins,
   // 设置别名，方便文件引用
   resolve: {
     alias: {
@@ -67,11 +220,20 @@ export default defineConfig({
       output: {
         // 分包策略，该选项允许你创建自定义的公共 chunk
         manualChunks: (id: string) => {
+          if (id.includes('ant-')) {
+            return 'vendor-antd'
+          }
+
+          if (id.includes('rc-')) {
+            return 'vendor-antd-rc'
+          }
+
           // 将node_modules中的代码单独打包成一个文件
           if (id.includes('node_modules')) {
-            // return id.toString().split('node_modules/')[1].split('/')[0].toString();
             // 2选1，如果node_modules所有文件不大，可以合并为1个文件
-            return 'vendor';
+            return projectConfig.isUseCdn
+              ? 'vendor'
+              : id.toString().replace('/node_modules/.pnpm/', '/node_modules/').split('node_modules/')[1].split('/')[0].toString()
           }
         },
       },
