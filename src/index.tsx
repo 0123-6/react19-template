@@ -11,7 +11,7 @@ import quarterOfYear from 'dayjs/plugin/quarterOfYear'
 // dayjs的中文包
 import 'dayjs/locale/zh-cn'
 // 导入antd顶层组件
-import AntDesign from 'antd'
+import {ConfigProvider} from "antd";
 // antd的中文包
 import zhCN from 'antd/locale/zh_CN'
 import App from './App.tsx'
@@ -24,7 +24,7 @@ dayjs.extend(quarterOfYear)
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     {/*antd包装组件，影响全局antd*/}
-    <AntDesign.ConfigProvider
+    <ConfigProvider
       // 设置antd为中文
       locale={zhCN}
       // 自定义主题
@@ -36,7 +36,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       }}
     >
       <App/>
-    </AntDesign.ConfigProvider>
+    </ConfigProvider>
   </React.StrictMode>,
 )
 
