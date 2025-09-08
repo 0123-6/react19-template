@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import {Input} from "antd";
+import {Input} from 'antd'
 
 function App() {
   const [count, setCount] = useState(0)

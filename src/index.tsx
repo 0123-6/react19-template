@@ -13,7 +13,7 @@ import quarterOfYear from 'dayjs/plugin/quarterOfYear'
 // dayjs的中文包
 import 'dayjs/locale/zh-cn'
 // 导入antd顶层组件
-import {ConfigProvider} from "antd";
+import {ConfigProvider} from 'antd'
 // antd的中文包
 import zhCN from 'antd/locale/zh_CN'
 import App from './App.tsx'
