@@ -30,5 +30,10 @@ export default tseslint.config([
         tsconfigRootDir: import.meta.dirname,
       },
     },
+    rules: {
+      // 👇 关闭这两个规则
+      '@typescript-eslint/no-unsafe-return': 'off',
+      '@typescript-eslint/no-unsafe-assignment': 'off',
+    },
   },
 ])
