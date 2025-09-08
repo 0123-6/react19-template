@@ -1,14 +1,14 @@
-import {defineConfig, type PluginOption} from "vite";
-import react from "@vitejs/plugin-react-swc";
-import tailwindcss from "@tailwindcss/vite";
-import {compression, defineAlgorithm} from "vite-plugin-compression2";
-import zlib from "node:zlib";
-import path from "node:path";
-import {projectConfig} from "./project.config.ts";
+import {defineConfig, type PluginOption} from 'vite'
+import react from '@vitejs/plugin-react-swc'
+import tailwindcss from '@tailwindcss/vite'
+import {compression, defineAlgorithm} from 'vite-plugin-compression2'
+import zlib from 'node:zlib'
+import path from 'node:path'
+import {projectConfig} from './project.config.ts'
 // cdn插件
 import {Plugin as cdn} from 'vite-plugin-cdn-import'
 // cdn排除插件
-import { viteExternalsPlugin as viteExternals } from 'vite-plugin-externals';
+import { viteExternalsPlugin as viteExternals } from 'vite-plugin-externals'
 
 const cdnMap = new Map()
 
@@ -140,7 +140,7 @@ const viteExternalsPlugin = viteExternals({
   '@remix-run/router': 'RemixRouter',
   'react-router': 'ReactRouter',
   'react-router-dom': 'ReactRouterDOM',
-}, { disableInServe: true });
+}, { disableInServe: true })
 
 // 全部的plugins
 const plugins: PluginOption[] = [
@@ -186,7 +186,7 @@ export default defineConfig({
     alias: {
       '@': path.resolve(__dirname, 'src'),
       '@views': path.resolve(__dirname, 'src/views'),
-    }
+    },
   },
   // 不排除node_modules目录，方便调试源代码
   server: {
@@ -196,7 +196,7 @@ export default defineConfig({
         target: 'http://localhost:8080',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
-      }
+      },
     },
   },
   // css配置

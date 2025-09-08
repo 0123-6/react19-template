@@ -37,6 +37,7 @@ export default tseslint.config([
       '@typescript-eslint/no-explicit-any': 'off',
 
       '@typescript-eslint/no-unsafe-function-type': 'off',
+      '@typescript-eslint/no-floating-promises': 'off',
       // 👈 强制缩进为2个空格
       // indent: ['error', 2],
       // 禁止混用 space 和 tab
