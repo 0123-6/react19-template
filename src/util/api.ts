@@ -1,10 +1,9 @@
 import {goLoginPage} from '@/util/env.ts'
-import errorMessage from '@/util/errorMessage.ts'
 import {exportFile} from '@/util/file.ts'
-import {ElMessage} from 'element-plus'
 import {projectConfig} from '../../project.config.ts'
 import {isFalse} from '@/util/validator.ts'
 import type {ISelectOption} from '@/components/base-form/useElSelect.ts'
+import {errorMessage, successMessage, warningMessage} from '@/util/message.ts'
 
 // 防抖函数
 export function debounce(fn: () => void, delay: number = 1000) {
@@ -110,14 +109,14 @@ export async function baseFetch(props: IBaseFetch)
   let body: string | Blob | FormData = undefined
   const isFetchProd = import.meta.env.PROD || mockProd
   if (!url) {
-    ElMessage.error('url不可以为\'\',请设置初始值为\'mock_\'')
+    errorMessage('url不可以为\'\',请设置初始值为\'mock_\'')
     return {
       isOk: false,
     }
   }
   // 保证修改完全
   if (url.startsWith('/') || mockUrl.startsWith('/')) {
-    ElMessage.error('请检查url或mockUrl,不能以/开头')
+    errorMessage('请检查url或mockUrl,不能以/开头')
     return {
       isOk: false,
     }
@@ -201,7 +200,7 @@ export async function baseFetch(props: IBaseFetch)
         }
       } else if (isFile) {
         // 文件类型得到json表示错误
-        ElMessage.warning('文件下载失败: ' + responseData?.msg || responseData?.message || '')
+        warningMessage('文件下载失败: ' + responseData?.msg || responseData?.message || '')
         return {
           isOk: false,
         }
@@ -223,7 +222,7 @@ export async function baseFetch(props: IBaseFetch)
       }
       const responseBlob = await response.blob()
       if (responseBlob.size === 0) {
-        ElMessage.warning('文件为空文件,无法下载')
+        warningMessage('文件为空文件,无法下载')
         return {
           isOk: false,
         }
@@ -233,10 +232,10 @@ export async function baseFetch(props: IBaseFetch)
       exportFile({
         file,
         callback: () => {
-          ElMessage.success('文件下载成功')
+          successMessage('文件下载成功')
         },
         callbackError: text => {
-          ElMessage.error(text)
+          errorMessage(text)
         },
       })
       return {
