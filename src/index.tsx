@@ -17,13 +17,14 @@ import {ConfigProvider} from 'antd'
 // antd的中文包
 import zhCN from 'antd/locale/zh_CN'
 import App from './App.tsx'
+import '@ant-design/v5-patch-for-react-19'
 
 // 将dayjs语言设置为中文
 dayjs.locale('zh-cn')
 // 支持季度
 dayjs.extend(quarterOfYear)
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
+ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     {/*antd包装组件，影响全局antd*/}
     <ConfigProvider
