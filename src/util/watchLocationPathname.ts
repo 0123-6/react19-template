@@ -1,6 +1,6 @@
 // 保存原生 pushState 和 replaceState 方法
-const originalPushState = history.pushState
-const originalReplaceState = history.replaceState
+const originalPushState = history.pushState.bind(history)
+const originalReplaceState = history.replaceState.bind(history)
 // 上一次的location.pathname
 let lastPathname = location.pathname
 const callbackSet = new Set<(pathname: string) => void>()
