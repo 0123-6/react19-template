@@ -25,7 +25,7 @@ export const useGetElementInterval = (props: IUseGetElementInterval) => {
   }
 
   if (!id && !ref) {
-    return Promise.reject('id或ref需要提供')
+    return Promise.reject(new Error('id或ref需要提供'))
   }
 
   onScopeDispose(cancelFn)
@@ -35,7 +35,7 @@ export const useGetElementInterval = (props: IUseGetElementInterval) => {
       tryNumber++
       if (tryNumber > maxTryNumber) {
         cancelFn()
-        reject(`获取id为${id}, ref为${ref}的元素超时`)
+        reject(new Error(`获取id为${id}, ref为${ref}的元素超时`))
         return
       }
 
