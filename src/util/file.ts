@@ -49,10 +49,8 @@ const parseFile = (props: IParseFile): void => {
     fileList,
     accept = '',
     maxSize = Infinity,
-    callback = () => {
-    },
-    callbackError = () => {
-    },
+    callback = () => { /* empty */ },
+    callbackError = () => { /* empty */ },
   } = props
   if (!fileList.length) {
     callbackError('文件读取失败')
