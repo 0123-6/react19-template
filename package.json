@@ -13,6 +13,7 @@
     "dayjs": "^1.11.18",
     "echarts": "^6.0.0",
     "nprogress": "^0.2.0",
+    "overlayscrollbars": "^2.12.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"
