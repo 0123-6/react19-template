@@ -8,6 +8,7 @@
     "build": "vite build"
   },
   "dependencies": {
+    "@ant-design/v5-patch-for-react-19": "^1.0.3",
     "antd": "^5.27.3",
     "cropperjs": "^2.0.1",
     "dayjs": "^1.11.18",
