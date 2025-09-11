@@ -42,6 +42,7 @@ export default tseslint.config([
       '@typescript-eslint/prefer-nullish-coalescing': 'off',
       '@typescript-eslint/no-unsafe-call': 'off',
       '@typescript-eslint/no-unsafe-member-access': 'off',
+      '@typescript-eslint/no-inferrable-types': 'off',
       // 👈 强制缩进为2个空格
       // indent: ['error', 2],
       // 禁止混用 space 和 tab
