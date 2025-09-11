@@ -1,32 +1,29 @@
-import {ElMessage} from 'element-plus'
+import { message } from 'antd'
 import {projectConfig} from '../../project.config.ts'
 
 // 成功
-export const successMessage = (message: string) => {
-  ElMessage({
-    type: 'success',
-    message,
-    showClose: true,
-    duration: projectConfig.errorMessageDuration,
-  })
+export const successMessage = (messageInfo: string) => {
+  const [messageApi] = message.useMessage()
+  messageApi.success(
+    messageInfo,
+    projectConfig.errorMessageDuration,
+  )
 }
 
 // 警告
-export const warningMessage = (message: string) => {
-  ElMessage({
-    type: 'warning',
-    message,
-    showClose: true,
-    duration: projectConfig.errorMessageDuration,
-  })
+export const warningMessage = (messageInfo: string) => {
+  const [messageApi] = message.useMessage()
+  messageApi.warning(
+    messageInfo,
+    projectConfig.errorMessageDuration,
+  )
 }
 
 // 失败
-export const errorMessage = (message: string) => {
-  ElMessage({
-    type: 'error',
-    message,
-    showClose: true,
-    duration: projectConfig.errorMessageDuration,
-  })
+export const errorMessage = (messageInfo: string) => {
+  const [messageApi] = message.useMessage()
+  messageApi.error(
+    messageInfo,
+    projectConfig.errorMessageDuration,
+  )
 }
