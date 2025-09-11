@@ -30,13 +30,13 @@ export function arrayToTree<T extends Record<string, any>>(
 
   // 第二遍建立 parent -> children 关系
   for (const item of items) {
-    const node = nodeMap.get(item[idKey])!
+    const node = nodeMap.get(item[idKey])
     const parentId = item[parentKey]
 
     if (parentId === rootParentValue || !nodeMap.has(parentId)) {
       tree.push(node)
     } else {
-      const parentNode = nodeMap.get(parentId)!
+      const parentNode = nodeMap.get(parentId)
       if (!parentNode.children) parentNode.children = []
       parentNode.children.push(node)
     }
