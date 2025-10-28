@@ -1,9 +1,9 @@
-import { useState } from 'react'
-import {Input} from 'antd'
+import {useResetState} from '@/util/hooks/useResetState.ts'
+import {Button, Input} from 'antd'
 
-function App() {
-  const [count, setCount] = useState(0)
-  const [text, setText] = useState('')
+export default function App() {
+  const [count, setCount] = useResetState(() => 0)
+  const [text, setText, resetText] = useResetState(() => '我是大SB')
 
   const myClick = async () => {
     await navigator.clipboard.writeText(text)
@@ -13,21 +13,19 @@ function App() {
   return (
     <>
       <h1>Vite + React</h1>
-      <div className="card">
+      <div>
         <button type='button' onClick={() => setCount((count) => count + 1)}>
           count is {count}
         </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
       </div>
       <input name={'sd'} value={text} onChange={e => setText(e.target.value)}/>
       <Input value={text} onChange={e => setText(e.target.value)}/>
-      <p className="read-the-docs" onClick={() => void myClick()}>
+      <p onClick={myClick}>
         Click on the Vite and React logos to learn more
       </p>
+      <div className={'flex items-center gap-x-4'}>
+        <Button onClick={resetText}>重置</Button>
+      </div>
     </>
   )
 }
-
-export default App
