@@ -21,9 +21,9 @@ export const warningMessage = (messageInfo: string) => {
 
 // 失败
 export const errorMessage = (messageInfo: string) => {
-  const [messageApi] = message.useMessage()
-  messageApi.error(
-    messageInfo,
-    projectConfig.errorMessageDuration,
-  )
+  // const [messageApi] = message.useMessage()
+  // messageApi.error(
+  //   messageInfo,
+  //   projectConfig.errorMessageDuration,
+  // )
 }

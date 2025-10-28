@@ -1,14 +1,17 @@
 import {onScopeDispose, type Ref} from 'vue'
+import React, {useEffect} from 'react'
 
 interface IUseGetElementInterval {
   // id优先级高
   id?: string,
-  ref?: Ref<HTMLElement>,
+  /** React ref 对象（current 指向 HTMLElement） */
+  ref?: React.RefObject<HTMLElement>
   interval?: number,
   maxTryNumber?: number,
 }
 
-export const useGetElementInterval = (props: IUseGetElementInterval) => {
+export const useGetElementInterval = (props: IUseGetElementInterval)
+  : Promise<HTMLElement> => {
   const {
     id,
     ref,
@@ -24,11 +27,12 @@ export const useGetElementInterval = (props: IUseGetElementInterval) => {
     timer = undefined
   }
 
+  // React 19 中可以直接在 Hook 里使用
+  useEffect(cancelFn, [])
+
   if (!id && !ref) {
     return Promise.reject(new Error('id或ref需要提供'))
   }
-
-  onScopeDispose(cancelFn)
 
   return new Promise((resolve: (element: HTMLElement) => void, reject) => {
     timer = setInterval(() => {
