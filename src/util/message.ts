@@ -1,5 +1,5 @@
 import {ElMessage} from 'element-plus'
-import {projectConfig} from '../../../project.config.ts'
+import {projectConfig} from '../../project.config.ts'
 
 // 成功
 export const successMessage = (message: string) => {

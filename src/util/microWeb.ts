@@ -1,6 +1,6 @@
-import {projectConfig} from '../../../project.config.ts'
+import {projectConfig} from '../../project.config.ts'
 import {watchLocationPathname} from '@/util/watchLocationPathname.ts'
-import {goLoginPage, openNewTab} from '@/util/vue/env.ts'
+import {goLoginPage, openNewTab} from '@/util/env.ts'
 
 // 子网站向父网站发送消息约定格式
 interface IMessage {
