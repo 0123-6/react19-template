@@ -1,5 +1,5 @@
-import {baseFetch, type IBaseFetch, type IBaseFetchReturn, type IResponseData} from '@/util/api'
-import {useResetRef} from '@/util/hooks/useResetState.ts'
+import {baseFetch, type IBaseFetch, type IBaseFetchReturn, type IResponseData} from '@/util/api.ts'
+import {useResetRef} from '@/util/vue/hooks/useResetState.ts'
 
 export interface IUseBaseFetch {
   // 在beforeFetch中需要重置的状态的重置函数

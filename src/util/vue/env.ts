@@ -1,5 +1,5 @@
-import {warningMessage} from '@/util/message.ts'
-import {projectConfig} from '../../project.config.ts'
+import {warningMessage} from '@/util/vue/message.ts'
+import {projectConfig} from '../../../project.config.ts'
 import router from '@/plugin/vue-router.ts'
 
 interface IOpenNewTab {
