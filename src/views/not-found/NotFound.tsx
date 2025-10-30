@@ -1,10 +1,18 @@
+import {useNavigate} from 'react-router'
+
 export default function NotFound() {
   // state
+  const navigate = useNavigate()
   // methods
+  const goIndexPage = () => {
+    navigate('/index')
+  }
   // render
   return (
-    <div className={'w-full h-[600px] flex flex-col bg-red-400'}>
-      <span className={'text-3xl'}>404页面</span>
+    <div className={'hpj w-full grow flex flex-col'}>
+      <span className={'text-[30px] leading-[30px]'}>404</span>
+      <button type={'button'}
+              onClick={goIndexPage}>跳转到首页</button>
     </div>
   )
 }
