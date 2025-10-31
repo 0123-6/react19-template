@@ -1,12 +1,33 @@
 <!doctype html>
 <html lang="zh-CN">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite19模板项目</title>
-	  <script type="module" src="/src/index.tsx"></script>
-  </head>
-  <body>
-    <div id="app"></div>
-  </body>
+
+<head>
+	<meta charset="UTF-8"/>
+	<link rel="icon" href="/logo.webp"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<title>Vite19模板项目</title>
+	<style>
+		body {
+			overflow: hidden;
+		}
+
+		#app {
+			width: 100vw;
+			height: 100vh;
+
+			position: relative;
+			display: flex;
+			flex-direction: column;
+			font-size: 14px;
+			line-height: 20px;
+			color: #646464;
+		}
+	</style>
+	<script type="module" src="/src/index.tsx"></script>
+</head>
+
+<body>
+  <div id="app"></div>
+</body>
+
 </html>
