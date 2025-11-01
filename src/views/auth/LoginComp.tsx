@@ -9,9 +9,9 @@ import React from 'react'
 import {useResetState} from '@/util/hooks/useResetState.ts'
 
 export default function LoginComp() {
+  const navigate = useNavigate()
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [remember, setRemember, _resetRemember] = useResetState(() => false)
-  const navigate = useNavigate()
   const [form] = Form.useForm()
 
   const fetchLoginObject = useBaseFetch({
