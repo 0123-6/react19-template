@@ -11,8 +11,10 @@ export default function NotFound() {
   return (
     <div className={'hpj w-full grow flex flex-col'}>
       <span className={'text-[30px] leading-[30px]'}>404</span>
-      <button type={'button'}
-              onClick={goIndexPage}>跳转到首页</button>
+      <button
+        type={'button'}
+        onClick={goIndexPage}>跳转到首页
+      </button>
     </div>
   )
 }
