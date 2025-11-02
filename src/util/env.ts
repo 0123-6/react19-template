@@ -1,6 +1,6 @@
 import {warningMessage} from '@/util/message.ts'
 import {projectConfig} from '../../project.config.ts'
-import router from '@/plugin/vue-router.ts'
+import {router} from '@/router'
 
 interface IOpenNewTab {
   pathnameSuffix: string,
@@ -25,7 +25,9 @@ export const openNewTab = (props: IOpenNewTab) => {
   // 如果是子网站iframe
   if (window.parent !== window) {
     if (!newTab) {
-      router.replace('/' + pathnameSuffix + search)
+      router.navigate('/' + pathnameSuffix + search, {
+        replace: true,
+      })
     }
     window.parent.postMessage({
       name: projectConfig.projectName,
@@ -41,7 +43,7 @@ export const openNewTab = (props: IOpenNewTab) => {
     if (newTab) {
       window.open(location.origin + projectConfig.baseUrl + pathnameSuffix + search)
     } else {
-      router.push('/' + pathnameSuffix + search)
+      router.navigate('/' + pathnameSuffix + search)
     }
   }
 }
@@ -58,7 +60,7 @@ export const goLoginPage = () => {
   } else {
     warningMessage('请重新登录')
     if (projectConfig.loginMode === 'router') {
-      router.push(projectConfig.loginRoutePath)
+      router.navigate(projectConfig.loginRoutePath)
     } else {
       location.href = location.origin + projectConfig.loginUrl
     }
