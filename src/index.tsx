@@ -1,9 +1,7 @@
 // tailwindcss入口文件，包含tailwindcss定义和全局base css
 import '@/index.css'
-import '@/style/antd-reset.css'
 import '@/style/nprogress.css'
 // 导入react
-import React from 'react'
 // 导入react-dom
 import ReactDOM from 'react-dom/client'
 
@@ -16,17 +14,18 @@ import 'dayjs/locale/zh-cn'
 import {ConfigProvider} from 'antd'
 // antd的中文包
 import zhCN from 'antd/locale/zh_CN'
-import App from './App.tsx'
 import '@ant-design/v5-patch-for-react-19'
+import LayoutPage from '@views/layout-page/LayoutPage.tsx'
+import {StrictMode} from 'react'
 
 // 将dayjs语言设置为中文
 dayjs.locale('zh-cn')
 // 支持季度
 dayjs.extend(quarterOfYear)
 
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    {/*antd包装组件，影响全局antd*/}
+// {/*antd包装组件，影响全局antd*/}
+ReactDOM.createRoot(document.getElementById('app')).render(
+  <StrictMode>
     <ConfigProvider
       // 设置antd为中文
       locale={zhCN}
@@ -38,9 +37,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         },
       }}
     >
-      <App/>
+      <LayoutPage/>
     </ConfigProvider>
-  </React.StrictMode>,
+  </StrictMode>,
 )
 
 
