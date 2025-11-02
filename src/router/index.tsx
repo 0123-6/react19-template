@@ -18,9 +18,7 @@ export const router = createBrowserRouter([
       },
       {
         path: 'index',
-        element: <div className={'w-screen h-screen bg-amber-200 flex flex-col'}>
-          <span>这是通用最外层组件</span>
-        </div>,
+        Component: lazy(() => import('@views/index/IndexPage.tsx')),
       },
       {
         path: 'about/:id',
