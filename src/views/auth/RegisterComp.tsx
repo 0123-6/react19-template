@@ -3,6 +3,7 @@ import {useNavigate} from 'react-router'
 import {useBaseFetch} from '@/util/hooks/useBaseFetch.ts'
 import {Button, Checkbox, Form, Input} from 'antd'
 import {isPasswordRegExp} from '@/util/validator.ts'
+import {successMessage} from '@/util/message.ts'
 
 export default function RegisterComp() {
   const navigate = useNavigate()
@@ -16,7 +17,7 @@ export default function RegisterComp() {
       data: form.getFieldsValue(true),
     }),
     transformResponseDataFn: () => {
-      console.log('注册成功')
+      successMessage('注册成功')
       navigate('/auth/login', {
         replace: true,
       })

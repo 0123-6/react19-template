@@ -4,6 +4,7 @@ import {Button, Form, Input} from 'antd'
 import {useCountdown} from '@/components/base-form/useCountdown.ts'
 import {isPhoneRegExp, isVerificationCodeRegExp} from '@/util/validator.ts'
 import React from 'react'
+import {successMessage} from '@/util/message.ts'
 
 export default function LoginByPhone() {
   const navigate = useNavigate()
@@ -14,7 +15,7 @@ export default function LoginByPhone() {
       data: form.getFieldsValue(true),
     }),
     transformResponseDataFn: () => {
-      console.log('登录成功')
+      successMessage('登录成功')
       navigate('/', {
         replace: true,
       })
@@ -30,13 +31,12 @@ export default function LoginByPhone() {
       },
     }),
     transformResponseDataFn: () => {
-      console.log('发送成功')
+      successMessage('发送成功')
       countdownObject.begin()
     },
   })
 
   const clickSendCode = async (e: React.MouseEvent) => {
-    console.log('ssss')
     e.stopPropagation()
     e.preventDefault()
     try {

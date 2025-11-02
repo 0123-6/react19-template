@@ -7,6 +7,7 @@ import IconGithub from '@views/auth/icon/IconGithub.tsx'
 import IconGoogle from '@views/auth/icon/IconGoogle.tsx'
 import React from 'react'
 import {useResetState} from '@/util/hooks/useResetState.ts'
+import {successMessage} from '@/util/message.ts'
 
 export default function LoginComp() {
   const navigate = useNavigate()
@@ -24,7 +25,7 @@ export default function LoginComp() {
       },
     }),
     transformResponseDataFn: () => {
-      console.log('登录成功')
+      successMessage('登录成功')
       navigate('/', {
         replace: true,
       })

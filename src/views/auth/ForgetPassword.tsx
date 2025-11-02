@@ -2,6 +2,7 @@ import {useBaseFetch} from '@/util/hooks/useBaseFetch.ts'
 import {useNavigate} from 'react-router'
 import {Button, Form, Input} from 'antd'
 import {isEmailRegExp} from '@/util/validator.ts'
+import {successMessage} from '@/util/message.ts'
 
 export default function ForgetPassword() {
   const navigate = useNavigate()
@@ -12,7 +13,7 @@ export default function ForgetPassword() {
       data: form.getFieldsValue(true),
     }),
     transformResponseDataFn: () => {
-      console.log('重置密码邮件已发送到你的邮箱')
+      successMessage('重置密码邮件已发送到你的邮箱')
     },
   })
   const clickSendEmail = async () => {
