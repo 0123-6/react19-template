@@ -1,65 +1,62 @@
-// 路由相关
-import {createBrowserRouter, Navigate} from 'react-router-dom'
-import LoginPage from '@views/login-page/LoginPage.tsx'
-import NotFound from '@views/not-found/NotFound.tsx'
-import Layout from '@/layout/LayoutPage.tsx'
-import Index from '@views/index/IndexPage.tsx'
-import ModuleOne from '@views/module-one/ModuleOne.tsx'
-import ModuleOneDetail from '@views/module-one/detail/ModuleOneDetail.tsx'
-import ModuleTwo from '@views/module-two/ModuleTwo.tsx'
-import ModuleFour from '@views/module-four/ModuleFour.tsx'
-import PersonCenter from '@views/person-center/PersonCenter.tsx'
-import TestComp from '@views/test/TestComp.tsx'
+import {createBrowserRouter, redirect} from 'react-router'
+import {lazy} from 'react'
 
 export const router = createBrowserRouter([
-  // 登录页面
+  // 404页面
   {
-    path: '/login',
-    element: <LoginPage/>,
+    path: '*',
+    Component: lazy(() => import('@/views/not-found/NotFound.tsx')),
   },
   // 普通页面
   {
     path: '/',
-    element: <Layout/>,
+    Component: lazy(() => import('@/views/layout-page/LayoutPageContent.tsx')),
     children: [
       {
-        path: '',
-        element: <Navigate to={'/index'} replace/>,
+        index: true,
+        loader: () => redirect('/index'),
       },
       {
         path: 'index',
-        element: <Index/>,
+        element: <div className={'w-screen h-screen bg-amber-200 flex flex-col'}>
+          <span>这是通用最外层组件</span>
+        </div>,
       },
       {
-        path: 'module-one',
-        element: <ModuleOne/>,
-      },
-      {
-        path: 'module-one/detail/:id',
-        element: <ModuleOneDetail/>,
-      },
-      {
-        path: 'module-two',
-        element: <ModuleTwo/>,
-      },
-      {
-        path: 'module-four',
-        element: <ModuleFour/>,
-      },
-      {
-        path: 'person-center',
-        element: <PersonCenter/>,
+        path: 'about/:id',
+        Component: lazy(() => import('@views/about-page/AboutPage.tsx')),
       },
     ],
   },
-  // 测试
+  // 登录相关页面
   {
-    path: '/test',
-    element: <TestComp/>,
-  },
-  // 404
-  {
-    path: '*',
-    element: <NotFound/>,
+    path: '/auth',
+    Component: lazy(() => import('@views/auth/AuthPage.tsx')),
+    children: [
+      {
+        index: true,
+        loader: () => redirect('/auth/login'),
+      },
+      {
+        path: 'login',
+        Component: lazy(() => import('@views/auth/LoginComp.tsx')),
+      },
+      {
+        path: 'register',
+        Component: lazy(() => import('@views/auth/RegisterComp.tsx')),
+      },
+      {
+        path: 'forget-password',
+        Component: lazy(() => import('@views/auth/ForgetPassword.tsx')),
+      },
+      {
+        path: 'login-by-qrcode',
+        Component: lazy(() => import('@views/auth/LoginByQrcode.tsx')),
+      },
+      {
+        path: 'login-by-phone',
+        Component: lazy(() => import('@views/auth/LoginByPhone.tsx')),
+      },
+    ],
   },
 ])
