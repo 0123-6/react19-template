@@ -1,5 +1,6 @@
 import {useEffect, useRef, useState} from 'react'
 import {ableSelectFileByClick, ableSelectFileByDrag, ISelectFileProps} from '@/util/file.ts'
+import {successMessage} from '@/util/message.ts'
 
 export default function PersonCenter() {
   // state
@@ -15,7 +16,7 @@ export default function PersonCenter() {
       element: clickElementRef.current!,
       accept: 'image/*',
       callback: file => {
-        console.log('点击读取成功')
+        successMessage('点击读取成功')
         console.log(file)
         imgUrl.current = URL.createObjectURL(file)
         setShowModal(true)
@@ -31,7 +32,7 @@ export default function PersonCenter() {
       element: dragElementRef.current!,
       accept: 'image/*',
       callback: file => {
-        console.log('点击读取成功')
+        successMessage('点击读取成功')
         console.log(file)
         imgUrl.current = URL.createObjectURL(file)
         setShowModal(true)

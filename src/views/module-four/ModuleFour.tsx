@@ -4,6 +4,7 @@ import {Space, Table, type TableProps, Typography} from 'antd'
 import {debounce, throttle} from '@/util/api.ts'
 import {ableSelectFileByClick, type ISelectFileProps} from '@/util/file.ts'
 import {excelExport, excelParse, type IExcelExportProps} from '@/util/excel.ts'
+import {successMessage} from '@/util/message.ts'
 
 // import DraggableComp from "@/components/react-beautiful-dnd/DraggableComp.tsx";
 
@@ -184,10 +185,10 @@ export default function ModuleFour() {
     }
   }, [expanded])
   const getData10 = debounce(function () {
-    console.log('点击了防抖函数')
+    successMessage('点击了防抖函数')
   }, 2000)
   const getData11 = throttle(function () {
-    console.log('点击了节流函数')
+    successMessage('点击了节流函数')
   }, 2000)
 
   function clickExport() {
