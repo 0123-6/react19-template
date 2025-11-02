@@ -20,10 +20,6 @@ export const router = createBrowserRouter([
         path: 'index',
         Component: lazy(() => import('@views/index/IndexPage.tsx')),
       },
-      {
-        path: 'about/:id',
-        Component: lazy(() => import('@views/about-page/AboutPage.tsx')),
-      },
     ],
   },
   // 登录相关页面
