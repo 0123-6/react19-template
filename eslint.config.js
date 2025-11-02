@@ -15,7 +15,7 @@ export default tseslint.config([
       js.configs.recommended,
       ...tseslint.configs.recommendedTypeChecked,
       ...tseslint.configs.stylisticTypeChecked,
-      reactHooks.configs['recommended-latest'],
+      reactHooks.configs.flat["recommended-latest"],
       reactRefresh.configs.vite,
       // Enable lint rules for React
       reactX.configs['recommended-typescript'],
