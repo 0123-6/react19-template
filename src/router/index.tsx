@@ -9,11 +9,6 @@ export type IRoute = Omit<RouteObject, 'children'> & {
 }
 
 export const menuRouteList: IRoute[] = [
-  // 首页
-  {
-    index: true,
-    loader: () => redirect('/index'),
-  },
   {
     path: '/index',
     name: '首页',
@@ -135,7 +130,14 @@ const routes: RouteObject[] = [
   {
     path: '/',
     Component: lazy(() => import('@/views/layout-page/LayoutPageContent.tsx')),
-    children: menuRouteList as RouteObject[],
+    children: [
+      // 首页
+      {
+        index: true,
+        loader: () => redirect('/index'),
+      },
+      ...(menuRouteList as RouteObject[]),
+    ],
   },
   // 登录相关页面
   {
