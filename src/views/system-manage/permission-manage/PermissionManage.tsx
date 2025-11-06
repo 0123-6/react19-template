@@ -1,5 +1,5 @@
 export default function PermissionManage() {
   return (
-    <div>11</div>
+    <div>权限管理</div>
   )
 }
