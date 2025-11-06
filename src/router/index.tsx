@@ -14,14 +14,14 @@ export const menuRouteList: IRoute[] = [
     name: '首页',
     Component: lazy(() => import('@views/index-page/IndexPage.tsx')),
     meta: {
-      icon: HomeOutlined,
+      icon: <HomeOutlined/>,
     },
   },
   {
     path: '/system-manage',
     name: '系统管理',
     meta: {
-      icon: SettingOutlined,
+      icon: <SettingOutlined/>,
     },
     children: [
       {
@@ -29,7 +29,7 @@ export const menuRouteList: IRoute[] = [
         name: '用户管理',
         Component: lazy(() => import('@/views/system-manage/user-manage/UserManage.tsx')),
         meta: {
-          icon: UserOutlined,
+          icon: <UserOutlined/>,
         },
       },
       {
@@ -37,7 +37,7 @@ export const menuRouteList: IRoute[] = [
         name: '角色管理',
         Component: lazy(() => import('@views/system-manage/role-manage/RoleManage.tsx')),
         meta: {
-          icon: TagOutlined,
+          icon: <TagOutlined/>,
         },
       },
       {
@@ -45,7 +45,7 @@ export const menuRouteList: IRoute[] = [
         name: '权限管理',
         Component: lazy(() => import('@views/system-manage/permission-manage/PermissionManage.tsx')),
         meta: {
-          icon: KeyOutlined,
+          icon: <KeyOutlined/>,
         },
       },
     ],
@@ -55,7 +55,7 @@ export const menuRouteList: IRoute[] = [
     path: '/business-directory-one',
     name: '业务目录一',
     meta: {
-      icon: HomeOutlined,
+      icon: <HomeOutlined/>,
     },
     children: [
       {
@@ -63,7 +63,7 @@ export const menuRouteList: IRoute[] = [
         name: '业务菜单1-1',
         Component: lazy(() => import('@views/business-directory-one/business-menu-one-one/BusinessMenuOneOne.tsx')),
         meta: {
-          icon: HomeOutlined,
+          icon: <HomeOutlined/>,
         },
       },
       {
@@ -71,7 +71,7 @@ export const menuRouteList: IRoute[] = [
         name: '业务菜单1-2',
         Component: lazy(() => import('@views/business-directory-one/business-menu-one-two/BusinessMenuOneTwo.tsx')),
         meta: {
-          icon: HomeOutlined,
+          icon: <HomeOutlined/>,
         },
       },
       {
@@ -79,7 +79,7 @@ export const menuRouteList: IRoute[] = [
         name: '业务菜单1-3',
         Component: lazy(() => import('@views/business-directory-one/business-menu-one-three/BusinessMenuOneThree.tsx')),
         meta: {
-          icon: HomeOutlined,
+          icon: <HomeOutlined/>,
         },
       },
       {
@@ -87,7 +87,7 @@ export const menuRouteList: IRoute[] = [
         name: '业务菜单1-4',
         Component: lazy(() => import('@views/business-directory-one/business-menu-one-four/BusinessMenuOneFour.tsx')),
         meta: {
-          icon: HomeOutlined,
+          icon: <HomeOutlined/>,
         },
       },
     ],
@@ -97,7 +97,7 @@ export const menuRouteList: IRoute[] = [
     path: '/business-directory-two',
     name: '业务目录二',
     meta: {
-      icon: HomeOutlined,
+      icon: <HomeOutlined/>,
     },
     children: [
       {
@@ -105,7 +105,7 @@ export const menuRouteList: IRoute[] = [
         name: '业务菜单2-1',
         Component: lazy(() => import('@views/business-directory-two/business-menu-two-one/BusinessMenuTwoOne.tsx')),
         meta: {
-          icon: HomeOutlined,
+          icon: <HomeOutlined/>,
         },
       },
       {
@@ -113,7 +113,7 @@ export const menuRouteList: IRoute[] = [
         name: '业务菜单2-2',
         Component: lazy(() => import('@views/business-directory-two/business-menu-two-two/BusinessMenuTwoTwo.tsx')),
         meta: {
-          icon: HomeOutlined,
+          icon: <HomeOutlined/>,
         },
       },
     ],
