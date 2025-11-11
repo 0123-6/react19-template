@@ -1,5 +1,6 @@
-export interface IUseSyncExternalStoreProps {
+export interface IUseSyncExternalStoreProps<T> {
   subscribe: (sub: () => void) => () => void,
-  getSnapshot: () => any,
+  getSnapshot: () => T,
+  set: (value: T) => void,
   [key: string]: any,
 }
