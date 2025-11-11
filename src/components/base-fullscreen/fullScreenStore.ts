@@ -5,7 +5,7 @@ const fullscreenerrorEvent = () => {
   errorMessage('切换全屏操作失败!')
 }
 
-export const fullScreenStore: IUseSyncExternalStoreProps = {
+export const fullScreenStore: IUseSyncExternalStoreProps<boolean> = {
   subscribe: sub => {
     document.addEventListener('fullscreenchange', sub)
     document.addEventListener('fullscreenerror', fullscreenerrorEvent)
@@ -18,6 +18,7 @@ export const fullScreenStore: IUseSyncExternalStoreProps = {
   getSnapshot: () => {
     return !!document.fullscreenElement
   },
+  set: () => undefined,
   switchFullScreen: () => {
     if (document.fullscreenElement) {
       document.exitFullscreen()
