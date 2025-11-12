@@ -1,122 +1,124 @@
 import {createBrowserRouter, redirect, type RouteObject} from 'react-router'
-import {lazy} from 'react'
+import {lazy, type ReactElement} from 'react'
 import {HomeOutlined, KeyOutlined, SettingOutlined, TagOutlined, UserOutlined} from '@ant-design/icons'
+import type {IUserInfo} from '@views/system-manage/user-manage/userManageCommon.ts'
+import {baseFetch} from '@/util/api.ts'
+import {userStore} from '@/store'
 
-export type IRoute = Omit<RouteObject, 'children'> & {
-  name?: string,
-  meta?: Record<string, any>,
-  children?: IRoute[],
+export interface IRouteHandle {
+  name: string,
+  icon: ReactElement,
 }
 
-export const menuRouteList: IRoute[] = [
+export const menuRouteList: RouteObject[] = [
   {
     path: '/index',
-    name: '首页',
     Component: lazy(() => import('@views/index-page/IndexPage.tsx')),
-    meta: {
+    handle: {
+      name: '首页',
       icon: <HomeOutlined/>,
     },
   },
   {
     path: '/system-manage',
-    name: '系统管理',
-    meta: {
-      icon: <SettingOutlined/>,
-    },
     children: [
       {
         path: '/system-manage/user-manage',
-        name: '用户管理',
         Component: lazy(() => import('@/views/system-manage/user-manage/UserManage.tsx')),
-        meta: {
+        handle: {
+          name: '用户管理',
           icon: <UserOutlined/>,
         },
       },
       {
         path: '/system-manage/role-manage',
-        name: '角色管理',
         Component: lazy(() => import('@views/system-manage/role-manage/RoleManage.tsx')),
-        meta: {
+        handle: {
+          name: '角色管理',
           icon: <TagOutlined/>,
         },
       },
       {
         path: '/system-manage/permission-manage',
-        name: '权限管理',
         Component: lazy(() => import('@views/system-manage/permission-manage/PermissionManage.tsx')),
-        meta: {
+        handle: {
+          name: '权限管理',
           icon: <KeyOutlined/>,
         },
       },
     ],
+    handle: {
+      name: '系统管理',
+      icon: <SettingOutlined/>,
+    },
   },
   // 业务目录一
   {
     path: '/business-directory-one',
-    name: '业务目录一',
-    meta: {
-      icon: <HomeOutlined/>,
-    },
     children: [
       {
         path: '/business-directory-one/business-menu-one-one',
-        name: '业务菜单1-1',
         Component: lazy(() => import('@views/business-directory-one/business-menu-one-one/BusinessMenuOneOne.tsx')),
-        meta: {
+        handle: {
+          name: '业务菜单1-1',
           icon: <HomeOutlined/>,
         },
       },
       {
         path: '/business-directory-one/business-menu-one-two',
-        name: '业务菜单1-2',
         Component: lazy(() => import('@views/business-directory-one/business-menu-one-two/BusinessMenuOneTwo.tsx')),
-        meta: {
+        handle: {
+          name: '业务菜单1-2',
           icon: <HomeOutlined/>,
         },
       },
       {
         path: '/business-directory-one/business-menu-one-three',
-        name: '业务菜单1-3',
         Component: lazy(() => import('@views/business-directory-one/business-menu-one-three/BusinessMenuOneThree.tsx')),
-        meta: {
+        handle: {
+          name: '业务菜单1-3',
           icon: <HomeOutlined/>,
         },
       },
       {
         path: '/business-directory-one/business-menu-one-four',
-        name: '业务菜单1-4',
         Component: lazy(() => import('@views/business-directory-one/business-menu-one-four/BusinessMenuOneFour.tsx')),
-        meta: {
+        handle: {
+          name: '业务菜单1-4',
           icon: <HomeOutlined/>,
         },
       },
     ],
+    handle: {
+      name: '业务目录一',
+      icon: <HomeOutlined/>,
+    },
   },
   // 业务目录二
   {
     path: '/business-directory-two',
-    name: '业务目录二',
-    meta: {
-      icon: <HomeOutlined/>,
-    },
     children: [
       {
         path: '/business-directory-two/business-menu-two-one',
-        name: '业务菜单2-1',
         Component: lazy(() => import('@views/business-directory-two/business-menu-two-one/BusinessMenuTwoOne.tsx')),
-        meta: {
+        handle: {
+          name: '业务菜单2-1',
           icon: <HomeOutlined/>,
         },
       },
       {
         path: '/business-directory-two/business-menu-two-two',
-        name: '业务菜单2-2',
         Component: lazy(() => import('@views/business-directory-two/business-menu-two-two/BusinessMenuTwoTwo.tsx')),
-        meta: {
+        handle: {
+          name: '业务菜单2-2',
           icon: <HomeOutlined/>,
         },
       },
     ],
+    handle: {
+      name: '业务目录二',
+      icon: <HomeOutlined/>,
+    },
   },
 ]
 
@@ -130,13 +132,32 @@ const routes: RouteObject[] = [
   {
     path: '/',
     Component: lazy(() => import('@/views/layout-page/LayoutPageContent.tsx')),
+    loader: async () => {
+      // 用户信息已经存在
+      if (userStore.getSnapshot()) {
+        return
+      }
+
+      // 获取用户信息
+      const result = await baseFetch({
+        url: 'user/getUserInfo',
+        mockProd: true,
+      })
+      if (!result.isOk) {
+        console.log('请求失败')
+        return
+      }
+
+      userStore.set(result.responseData.data as IUserInfo)
+      console.log(userStore.getSnapshot())
+    },
     children: [
       // 首页
       {
         index: true,
         loader: () => redirect('/index'),
       },
-      ...(menuRouteList as RouteObject[]),
+      ...menuRouteList,
     ],
   },
   // 登录相关页面
