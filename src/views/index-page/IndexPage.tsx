@@ -36,7 +36,7 @@ export default function Index() {
 
   return (
     <div className="w-full h-[600px] flex flex-col">
-      <span className="text-primary text-3xl">你好,vue-ts</span>
+      <span className="text-primary text-3xl">你好,react19-ts</span>
       <div
         ref={divRef}
         className="w-[500px] h-[500px]"
