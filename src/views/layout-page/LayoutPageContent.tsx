@@ -73,7 +73,8 @@ export default function LayoutPageContent() {
         {/* 右 */}
         <div className={'flex items-center gap-x-3'}>
           <div
-            className="w-[120px] h-[32px] bg-disabled rounded-full flex items-center px-2 cursor-pointer hover:text-text-title">
+            className="w-[120px] h-[32px] bg-disabled rounded-full flex items-center px-2 cursor-pointer hover:text-text-title"
+          >
             <SearchOutlined/>
             <span className="ml-4">搜索菜单</span>
           </div>
