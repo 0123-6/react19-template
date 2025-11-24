@@ -14,7 +14,6 @@ import 'dayjs/locale/zh-cn'
 import {ConfigProvider} from 'antd'
 // antd的中文包
 import zhCN from 'antd/locale/zh_CN'
-import '@ant-design/v5-patch-for-react-19'
 import LayoutPage from '@views/layout-page/LayoutPage.tsx'
 import {StrictMode} from 'react'
 
