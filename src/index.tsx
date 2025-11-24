@@ -14,8 +14,9 @@ import 'dayjs/locale/zh-cn'
 import {ConfigProvider} from 'antd'
 // antd的中文包
 import zhCN from 'antd/locale/zh_CN'
-import LayoutPage from '@views/layout-page/LayoutPage.tsx'
 import {StrictMode} from 'react'
+import { RouterProvider } from 'react-router'
+import {router} from '@/router'
 
 // 将dayjs语言设置为中文
 dayjs.locale('zh-cn')
@@ -36,7 +37,7 @@ ReactDOM.createRoot(document.getElementById('app')).render(
         },
       }}
     >
-      <LayoutPage/>
+      <RouterProvider router={router}/>
     </ConfigProvider>
   </StrictMode>,
 )
