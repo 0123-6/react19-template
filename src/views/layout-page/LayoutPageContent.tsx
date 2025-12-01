@@ -4,13 +4,54 @@ import overlayScrollbar from '@/util/overlayScrollbar.ts'
 import {projectConfig} from '../../../project.config.ts'
 import {SearchOutlined} from '@ant-design/icons'
 import BaseFullscreen from '@/components/base-fullscreen/BaseFullscreen.tsx'
-import {Menu} from 'antd'
+import {Menu, Popover} from 'antd'
 import {type IRouteHandle, menuRouteList} from '@/router'
 import {getUserMenuList, menuRouteListToMenuComp, pathnameToMulti} from '@views/layout-page/menuRouteListToMenuComp.ts'
 import BreadcrumbComp from '@views/layout-page/BreadcrumbComp.tsx'
 import type {IUserInfo} from '@views/system-manage/user-manage/userManageCommon.ts'
 import {userStore} from '@/store'
 import {watchLocationPathname} from '@/util/watchLocationPathname.ts'
+import BaseSpanTooltip from '@/components/base-span-tooltip/BaseSpanTooltip.tsx'
+import LogoutIcon from '@views/layout-page/LogoutIcon.tsx'
+
+const PopoverComp = () => {
+  const userObject: IUserInfo = useSyncExternalStore(userStore.subscribe, userStore.getSnapshot)
+  const clickLogout = () => {
+    // renderLogoutDialog()
+  }
+
+  return (
+    <div className={'w-[240px] flex flex-col'}>
+      <div className={'w-full p-3 flex items-center gap-x-2 border-b border-disabled'}>
+        <div className="w-[48px] shrink-0 h-[48px] rounded-full overflow-hidden">
+          <img
+            src="/default_avatar.jpg"
+            alt=""
+          />
+        </div>
+        <div className={'grow h-[48px] flex flex-col justify-between'}>
+          <BaseSpanTooltip
+            text={userObject?.account}
+            style={{
+              width: '100px',
+            }}
+          />
+          <BaseSpanTooltip
+            text={userObject?.phone}
+            className={'text-xs'}
+          />
+        </div>
+      </div>
+      <div
+        className={'m-1 h-[40px] p-1.5 rounded flex items-center gap-x-1 text-text-title cursor-pointer hover:bg-disabled'}
+        onClick={clickLogout}
+      >
+        <LogoutIcon/>
+        <span>退出登录</span>
+      </div>
+    </div>
+  )
+}
 
 export default function LayoutPageContent() {
   const navigate = useNavigate()
@@ -45,8 +86,6 @@ export default function LayoutPageContent() {
     navigate(e.key)
   }
 
-  console.log('ssssssssssssss')
-
   return (
     <div
       className={'w-full h-full flex flex-col shrink-0-children'}
@@ -79,6 +118,27 @@ export default function LayoutPageContent() {
             <span className="ml-4">搜索菜单</span>
           </div>
           <BaseFullscreen/>
+          {/* 个人照片 */}
+          <Popover
+            content={PopoverComp}
+            classNames={{
+              container: '!p-0',
+            }}
+            placement="bottomRight"
+            arrow={false}
+          >
+            <button className="w-[44px] h-[44px] flex justify-center items-center hover:bg-disabled rounded-full">
+              <div className="w-[32px] h-[32px] rounded-full overflow-hidden">
+                <img
+                  src="/default_avatar.jpg"
+                  alt=""
+                />
+              </div>
+            </button>
+          </Popover>
+          {/*<div className={'w-[100px]'}>*/}
+          {/*  <BaseSpanTooltip text={'我草夏翀的大B我草夏翀的大B我草夏翀的大B'}/>*/}
+          {/*</div>*/}
         </div>
       </div>
       {/* 内容 */}
