@@ -12,7 +12,7 @@ import type {IUserInfo} from '@views/system-manage/user-manage/userManageCommon.
 import {userStore} from '@/store'
 import {watchLocationPathname} from '@/util/watchLocationPathname.ts'
 import BaseSpanTooltip from '@/components/base-span-tooltip/BaseSpanTooltip.tsx'
-import LogoutIcon from '@views/layout-page/LogoutIcon.tsx'
+import LogoutIcon from '@views/layout-page/icon/LogoutIcon.tsx'
 
 const PopoverComp = () => {
   const userObject: IUserInfo = useSyncExternalStore(userStore.subscribe, userStore.getSnapshot)
