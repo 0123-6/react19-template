@@ -58,7 +58,6 @@ export const goLoginPage = () => {
       data: JSON.stringify(null),
     }, location.origin)
   } else {
-    warningMessage('请重新登录')
     if (projectConfig.loginMode === 'router') {
       router.navigate(projectConfig.loginRoutePath)
     } else {
