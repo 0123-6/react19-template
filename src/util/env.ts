@@ -1,4 +1,3 @@
-import {warningMessage} from '@/util/message.ts'
 import {projectConfig} from '../../project.config.ts'
 import {router} from '@/router'
 
