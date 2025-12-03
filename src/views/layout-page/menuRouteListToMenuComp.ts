@@ -42,7 +42,7 @@ export const menuRouteListToMenuComp = (menuRouteList: RouteObject[])
 const dfsGetUserMenu = (menuRoute: RouteObject)
   : RouteObject => {
   const userObject: IUserInfo = userStore.getSnapshot()
-  if (!userObject.permissionList.includes((menuRoute.handle as IRouteHandle).name)) {
+  if (!userObject?.permissionList?.includes((menuRoute.handle as IRouteHandle).name)) {
     return undefined
   }
 
