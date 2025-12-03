@@ -4,7 +4,6 @@ import {HomeOutlined, KeyOutlined, SettingOutlined, TagOutlined, UserOutlined} f
 import type {IUserInfo} from '@views/system-manage/user-manage/userManageCommon.ts'
 import {baseFetch} from '@/util/api.ts'
 import {userStore} from '@/store'
-import {errorMessage} from '@/util/message.ts'
 
 export interface IRouteHandle {
   name: string,
@@ -145,7 +144,6 @@ const routes: RouteObject[] = [
         mockProd: true,
       })
       if (!result.isOk) {
-        errorMessage('请求用户信息失败')
         return
       }
 
