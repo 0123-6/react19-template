@@ -107,6 +107,14 @@ export default function LayoutPageContent() {
     })
   }, [matches])
 
+  // 左侧菜单滚动条
+  const leftElementRef = useRef<HTMLDivElement | null>(null)
+  useEffect(() => {
+    overlayScrollbar({
+      element: leftElementRef.current,
+    })
+  }, [])
+
   const userMenuList = getUserMenuList(menuRouteList)
   const menuList = menuRouteListToMenuComp(userMenuList)
 
@@ -174,18 +182,23 @@ export default function LayoutPageContent() {
         }}
       >
         {/* 左边菜单 */}
-        <div className={'w-[222px] h-full flex flex-col bg-white border-r border-disabled'}>
-          {
-            userObject?.permissionList?.length > 0 && (
-              <Menu
-                items={menuList}
-                mode={'inline'}
-                onClick={clickMenu}
-                defaultSelectedKeys={[location.pathname]}
-                defaultOpenKeys={pathnameToMulti(location.pathname)}
-              />
-            )
-          }
+        <div
+          ref={leftElementRef}
+          className={'w-[222px] h-full bg-white border-r border-disabled'}
+        >
+          <div className={'w-full flex flex-col'}>
+            {
+              userObject?.permissionList?.length > 0 && (
+                <Menu
+                  items={menuList}
+                  mode={'inline'}
+                  onClick={clickMenu}
+                  defaultSelectedKeys={[location.pathname]}
+                  defaultOpenKeys={pathnameToMulti(location.pathname)}
+                />
+              )
+            }
+          </div>
         </div>
         {/* 右边内容 */}
         <div
