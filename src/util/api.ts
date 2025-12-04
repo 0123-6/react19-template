@@ -1,7 +1,7 @@
 import {goLoginPage} from '@/util/env.ts'
 import {exportFile} from '@/util/file.ts'
 import {projectConfig} from '../../project.config.ts'
-import type {ISelectOption} from '@/components/base-form/useElSelect.ts'
+import type {ISelectOption} from '@/components/base-form/useSelect.ts'
 import {errorMessage, successMessage} from '@/util/message.ts'
 
 // 防抖函数

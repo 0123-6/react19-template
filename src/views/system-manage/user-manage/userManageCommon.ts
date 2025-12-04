@@ -1,4 +1,4 @@
-import {type ISelectOption} from '@/components/base-form/useElSelect.ts'
+import {type ISelectOption} from '@/components/base-form/useSelect.ts'
 import type {IEntity} from '@views/interfaceCommon.ts'
 
 // 用户的信息
