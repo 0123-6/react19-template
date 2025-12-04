@@ -13,12 +13,44 @@ import {userStore} from '@/store'
 import {watchLocationPathname} from '@/util/watchLocationPathname.ts'
 import BaseSpanTooltip from '@/components/base-span-tooltip/BaseSpanTooltip.tsx'
 import LogoutIcon from '@views/layout-page/icon/LogoutIcon.tsx'
+import {useBaseFetch} from '@/util/hooks/useBaseFetch.ts'
+import PromptDialog from '@/components/base-dialog/PromptDialog.tsx'
+import renderComp from '@/components/base-dialog/renderComp.ts'
+import type {IPromptDialog} from '@/components/base-dialog/PromptDialogInterface.ts'
 
 const PopoverComp = () => {
+  const navigate = useNavigate()
   const userObject: IUserInfo = useSyncExternalStore(userStore.subscribe, userStore.getSnapshot)
   const clickLogout = () => {
-    // renderLogoutDialog()
+    renderLogoutDialog()
   }
+
+  const renderLogoutDialog = renderComp(PromptDialog, (): IPromptDialog => ({
+    title: '提示',
+    width: 400,
+    text: '确认退出登录吗?',
+    okButton: {
+      type: 'primary',
+      text: '退出',
+      fetchText: '退出中',
+    },
+    fetchObject: fetchLogoutObject,
+  }))
+
+  const fetchLogoutObject = useBaseFetch({
+    beforeFetchResetFn: async () => {
+      await navigate('/auth/login', {
+        replace: true,
+      })
+      setTimeout(() => {
+        userStore.set(null)
+      }, 1000)
+    },
+    fetchOptionFn: () => ({
+      url: 'logout',
+      mockProd: true,
+    }),
+  })
 
   return (
     <div className={'w-[240px] flex flex-col'}>
@@ -148,7 +180,7 @@ export default function LayoutPageContent() {
         {/* 左边菜单 */}
         <div className={'w-[222px] h-full flex flex-col bg-white border-r border-disabled'}>
           {
-            userObject.permissionList.length > 0 && (
+            userObject?.permissionList?.length > 0 && (
               <Menu
                 items={menuList}
                 mode={'inline'}
@@ -174,7 +206,7 @@ export default function LayoutPageContent() {
             }}
           >
             {
-              userObject.permissionList.includes((matches.at(-1).handle as IRouteHandle).name)
+              userObject?.permissionList?.includes((matches.at(-1).handle as IRouteHandle).name)
                 ? <Outlet/>
                 : <span className={'text-[30px] text-warning'}>没有权限</span>
             }
