@@ -10,13 +10,13 @@ import {getUserMenuList, menuRouteListToMenuComp, pathnameToMulti} from '@views/
 import BreadcrumbComp from '@views/layout-page/BreadcrumbComp.tsx'
 import type {IUserInfo} from '@views/system-manage/user-manage/userManageCommon.ts'
 import {userStore} from '@/store'
-import {watchLocationPathname} from '@/util/watchLocationPathname.ts'
 import BaseSpanTooltip from '@/components/base-span-tooltip/BaseSpanTooltip.tsx'
 import LogoutIcon from '@views/layout-page/icon/LogoutIcon.tsx'
 import {useBaseFetch} from '@/util/hooks/useBaseFetch.ts'
 import PromptDialog from '@/components/base-dialog/PromptDialog.tsx'
 import renderComp from '@/components/base-dialog/renderComp.ts'
 import type {IPromptDialog} from '@/components/base-dialog/PromptDialogInterface.ts'
+import type {OverlayScrollbars} from 'overlayscrollbars'
 
 const PopoverComp = () => {
   const navigate = useNavigate()
@@ -92,24 +92,20 @@ export default function LayoutPageContent() {
   const userObject: IUserInfo = useSyncExternalStore(userStore.subscribe, userStore.getSnapshot)
 
   // React无关，将滚动条改为好看的样式
+  const instance = useRef<OverlayScrollbars>(null)
   const appElementRef = useRef<HTMLDivElement | null>(null)
   useEffect(() => {
-    const instance = overlayScrollbar({
+    instance.current = overlayScrollbar({
       element: appElementRef.current,
       autoHide: false,
     })
-
-    const stop = watchLocationPathname(() => {
-      instance.elements()?.scrollOffsetElement?.scrollTo({
-        top: 0,
-        left: 0,
-      })
-    })
-
-    return () => {
-      stop()
-    }
   }, [])
+  useEffect(() => {
+    instance.current?.elements()?.scrollOffsetElement?.scrollTo({
+      top: 0,
+      left: 0,
+    })
+  }, [matches])
 
   const userMenuList = getUserMenuList(menuRouteList)
   const menuList = menuRouteListToMenuComp(userMenuList)
