@@ -32,28 +32,29 @@ export default function PromptDialog(props: IPromptDialog) {
     buttonConnectFetchObject = true,
   } = props
 
+  // 初始化text和textList
+  if (text && textList.length
+    || !text && (textList.length === 0)) {
+    console.log(text)
+    console.log(textList)
+    if (import.meta.env.DEV) {
+      alert('PromptDialog组件： text和textList需要有且只有1项')
+    }
+    console.error('PromptDialog组件： text和textList需要有且只有1项')
+  }
+  if (text) {
+    textList.push(text)
+  } else {
+    // 啥都不用做
+  }
+  // 初始化okButton
+  okButton.type = okButton.type ?? 'primary'
+  okButton.plain = okButton.plain ?? false
+  okButton.width = okButton.width ?? 88
+  okButton.text = okButton.text ?? '确定'
+  okButton.fetchText = okButton.fetchText ?? '确定'
+
   useEffect(() => {
-    // 初始化text和textList
-    if (text && textList.length
-      || !text && (textList.length === 0)) {
-      console.log(text)
-      console.log(textList)
-      if (import.meta.env.DEV) {
-        alert('PromptDialog组件： text和textList需要有且只有1项')
-      }
-      console.error('PromptDialog组件： text和textList需要有且只有1项')
-    }
-    if (text) {
-      textList.push(text)
-    } else {
-      // 啥都不用做
-    }
-    // 初始化okButton
-    okButton.type = okButton.type ?? 'primary'
-    okButton.plain = okButton.plain ?? false
-    okButton.width = okButton.width ?? 88
-    okButton.text = okButton.text ?? '确定'
-    okButton.fetchText = okButton.fetchText ?? '确定'
     dialogObject.setIsShow(true)
 
     return () => {
@@ -114,7 +115,6 @@ export default function PromptDialog(props: IPromptDialog) {
                 >{ typeof item === 'object' ? ` ${item.text} ` : item }</span>
               ))
             }
-            <span className={'text-text break-all'}>确认退出登录吗?</span>
           </div>
           {/*按钮*/}
           <div className={'flex justify-end items-center gap-x-2'}>
@@ -122,7 +122,8 @@ export default function PromptDialog(props: IPromptDialog) {
               onClick={onCancel}
             >取消</Button>
             <Button
-              color={styleMap[okButton.type]}
+              color={'primary'}
+              variant={'filled'}
               loading={fetchObject?.isFetching}
               onClick={clickOk}
             >
