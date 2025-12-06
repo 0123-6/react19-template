@@ -1,8 +1,6 @@
 import {createBrowserRouter, redirect, type RouteObject} from 'react-router'
 import {lazy, type ReactElement} from 'react'
 import {HomeOutlined, KeyOutlined, SettingOutlined, TagOutlined, UserOutlined} from '@ant-design/icons'
-import type {IUserInfo} from '@views/system-manage/user-manage/userManageCommon.ts'
-import {baseFetch} from '@/util/api.ts'
 import {userStore} from '@/store'
 
 export interface IRouteHandle {
@@ -127,33 +125,34 @@ const routes: RouteObject[] = [
   {
     path: '*',
     Component: lazy(() => import('@/views/not-found/NotFound.tsx')),
+    loader: async () => {
+      if (location.pathname === '/') {
+        return
+      }
+
+      await userStore.fetch()
+    },
   },
   // 普通页面
   {
     path: '/',
     Component: lazy(() => import('@/views/layout-page/LayoutPageContent.tsx')),
     loader: async () => {
-      // 用户信息已经存在
-      if (userStore.getSnapshot()) {
+      if (location.pathname === '/') {
         return
       }
 
-      // 获取用户信息
-      const result = await baseFetch({
-        url: 'user/getUserInfo',
-        mockProd: true,
-      })
-      if (!result.isOk) {
-        return
-      }
-
-      userStore.set(result.responseData.data as IUserInfo)
+      await userStore.fetch()
     },
     children: [
       // 首页
       {
         index: true,
-        loader: () => goFirstRoute(),
+        loader: async () => {
+          await userStore.fetch()
+          const path = getFirstRoute()
+          return redirect(path)
+        },
       },
       ...menuRouteList,
     ],
@@ -191,8 +190,33 @@ const routes: RouteObject[] = [
   },
 ]
 
-const goFirstRoute = () => {
-  return redirect('/index')
+// 获取用户第1个有效的路由
+export const getFirstRoute = () => {
+  const userInfo = userStore.getSnapshot()
+  let ok = false
+  let path: string
+  for (let i = 0; i < menuRouteList.length && !ok; i++) {
+    if (!userInfo.permissionList.includes(menuRouteList[i].handle.name as string)) {
+      continue
+    }
+
+    // 目录
+    if (menuRouteList[i].children?.length) {
+      for (let j = 0; j < menuRouteList[i].children.length && !ok; j++) {
+        if (!userInfo.permissionList.includes(menuRouteList[i].children[j].handle.name as string)) {
+          continue
+        }
+
+        path = menuRouteList[i].children[j].path
+        ok = true
+      }
+    } else if (menuRouteList[i].Component) {
+      // 菜单
+      path = menuRouteList[i].path
+      ok = true
+    }
+  }
+  return path ?? '/index'
 }
 
 export const router = createBrowserRouter(routes)
