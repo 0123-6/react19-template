@@ -1,4 +1,4 @@
-import {Outlet, useMatches, useNavigate} from 'react-router'
+import {Outlet, useLocation, useMatches, useNavigate} from 'react-router'
 import {useEffect, useRef, useSyncExternalStore} from 'react'
 import overlayScrollbar from '@/util/overlayScrollbar.ts'
 import {projectConfig} from '../../../project.config.ts'
@@ -88,6 +88,7 @@ const PopoverComp = () => {
 export default function LayoutPageContent() {
   const navigate = useNavigate()
   const matches = useMatches()
+  const Location = useLocation()
   const isChildWeb = window !== window.parent
   const userObject: IUserInfo = useSyncExternalStore(userStore.subscribe, userStore.getSnapshot)
 
@@ -193,8 +194,8 @@ export default function LayoutPageContent() {
                   items={menuList}
                   mode={'inline'}
                   onClick={clickMenu}
-                  defaultSelectedKeys={[location.pathname]}
-                  defaultOpenKeys={pathnameToMulti(location.pathname)}
+                  selectedKeys={[Location.pathname]}
+                  defaultOpenKeys={pathnameToMulti(Location.pathname)}
                 />
               )
             }
