@@ -1,11 +1,13 @@
 import {useNavigate} from 'react-router'
+import {getFirstRoute} from '@/router'
 
 export default function NotFound() {
   // state
   const navigate = useNavigate()
   // methods
   const goIndexPage = () => {
-    navigate('/index')
+    const path = getFirstRoute()
+    navigate(path)
   }
   // render
   return (
