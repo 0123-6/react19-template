@@ -5,7 +5,11 @@ const fullscreenerrorEvent = () => {
   errorMessage('切换全屏操作失败!')
 }
 
-export const fullScreenStore: IUseSyncExternalStoreProps<boolean> = {
+type IProps = IUseSyncExternalStoreProps<boolean> & {
+  switchFullScreen: () => void,
+}
+
+export const fullScreenStore: IProps = {
   subscribe: sub => {
     document.addEventListener('fullscreenchange', sub)
     document.addEventListener('fullscreenerror', fullscreenerrorEvent)
