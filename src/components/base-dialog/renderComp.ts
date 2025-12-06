@@ -13,7 +13,7 @@ export default function renderComp(comp: (props: any) => ReactElement, props: Re
       cancel: () => {
         queueMicrotask(() => {
           document.body.removeChild(container)
-          root.unmount()
+          root.render(null)
         })
       },
     })
