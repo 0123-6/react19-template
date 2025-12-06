@@ -1,11 +1,40 @@
-import type {
-  IPromptDialog,
-  IPromptDialogOkButton,
-  IPromptDialogTextItem,
-} from '@/components/base-dialog/PromptDialogInterface.ts'
 import {Button, Modal} from 'antd'
-import {useFeedback} from '@/components/base-dialog/useFeedback.ts'
-import {useEffect} from 'react'
+import type {IUseFeedbackReturn} from '@/components/base-dialog/useFeedback.ts'
+import type {IUseBaseFetchReturn} from '@/util/hooks/useBaseFetch.ts'
+
+export interface IPromptDialog {
+  // 弹框标题, 默认为'提示'
+  title?: string,
+  // 宽度, 默认为400
+  width?: number,
+  // 要展示的文字内容
+  text?: string | number | IPromptDialogTextItem,
+  textList?: (string | number | IPromptDialogTextItem)[],
+  // 必须存在
+  cancel?: () => void,
+  // 确认按钮
+  okButton?: IPromptDialogOkButton,
+  // useElFeedback.ts实例,应该是独立的逻辑,不应该依赖fetchObject
+  // 如果发现依赖fetchObject, 则考虑将逻辑写到fetchObject中,以确保功能内聚和各自的独立性.
+  dialogObject?: IUseFeedbackReturn,
+  // 点击确认按钮触发的事件
+  fetchObject?: IUseBaseFetchReturn,
+  // 按钮是否和fetchObject关联
+  buttonConnectFetchObject?: boolean,
+}
+
+export interface IPromptDialogOkButton {
+  type?: 'primary' | 'success' | 'warning' | 'danger' | 'info',
+  plain?: boolean,
+  width?: number,
+  text?: string,
+  fetchText?: string,
+}
+
+export interface IPromptDialogTextItem {
+  text: string | number,
+  color?: 'default' | 'primary' | 'success' | 'warning' | 'error' | 'text' | 'desc',
+}
 
 const styleMap = {
   default: '#646464',
@@ -18,7 +47,6 @@ const styleMap = {
 }
 
 export default function PromptDialog(props: IPromptDialog) {
-  const innerDialogObject = useFeedback()
   const {
     title = '提示',
     width = 400,
@@ -27,7 +55,7 @@ export default function PromptDialog(props: IPromptDialog) {
     okButton = {} as IPromptDialogOkButton,
     cancel,
     fetchObject,
-    dialogObject = innerDialogObject,
+    dialogObject,
     // 按钮是否和fetchObject关联
     buttonConnectFetchObject = true,
   } = props
@@ -42,10 +70,8 @@ export default function PromptDialog(props: IPromptDialog) {
     }
     console.error('PromptDialog组件： text和textList需要有且只有1项')
   }
-  if (text) {
+  if (!textList.length) {
     textList.push(text)
-  } else {
-    // 啥都不用做
   }
   // 初始化okButton
   okButton.type = okButton.type ?? 'primary'
@@ -53,15 +79,6 @@ export default function PromptDialog(props: IPromptDialog) {
   okButton.width = okButton.width ?? 88
   okButton.text = okButton.text ?? '确定'
   okButton.fetchText = okButton.fetchText ?? '确定'
-
-  useEffect(() => {
-    dialogObject.setIsShow(true)
-
-    return () => {
-      textList.length = 0
-      dialogObject.setIsShow(false)
-    }
-  }, [])
 
   const clickOk = async () => {
     if (!fetchObject) {
@@ -87,7 +104,6 @@ export default function PromptDialog(props: IPromptDialog) {
 
   return (
     <>
-      {dialogObject.isShow}
       <Modal
         zIndex={100000}
         open={dialogObject.isShow}
