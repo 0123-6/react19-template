@@ -14,28 +14,16 @@ import BaseSpanTooltip from '@/components/base-span-tooltip/BaseSpanTooltip.tsx'
 import LogoutIcon from '@views/layout-page/icon/LogoutIcon.tsx'
 import {useBaseFetch} from '@/util/hooks/useBaseFetch.ts'
 import PromptDialog from '@/components/base-dialog/PromptDialog.tsx'
-import renderComp from '@/components/base-dialog/renderComp.ts'
-import type {IPromptDialog} from '@/components/base-dialog/PromptDialogInterface.ts'
 import type {OverlayScrollbars} from 'overlayscrollbars'
+import {useFeedback} from '@/components/base-dialog/useFeedback.ts'
 
 const PopoverComp = () => {
   const navigate = useNavigate()
   const userObject: IUserInfo = useSyncExternalStore(userStore.subscribe, userStore.getSnapshot)
+  const logoutDialogObject = useFeedback()
   const clickLogout = () => {
-    renderLogoutDialog()
+    logoutDialogObject.setIsShow(true)
   }
-
-  const renderLogoutDialog = renderComp(PromptDialog, (): IPromptDialog => ({
-    title: '提示',
-    width: 400,
-    text: '确认退出登录吗?',
-    okButton: {
-      type: 'primary',
-      text: '退出',
-      fetchText: '退出中',
-    },
-    fetchObject: fetchLogoutObject,
-  }))
 
   const fetchLogoutObject = useBaseFetch({
     beforeFetchResetFn: async () => {
@@ -81,6 +69,18 @@ const PopoverComp = () => {
         <LogoutIcon/>
         <span>退出登录</span>
       </div>
+      <PromptDialog
+        dialogObject={logoutDialogObject}
+        title={'提示'}
+        width={400}
+        text={'确认退出登录吗?'}
+        okButton={{
+          type: 'primary',
+          text: '退出',
+          fetchText: '退出中',
+        }}
+        fetchObject={fetchLogoutObject}
+      />
     </div>
   )
 }
