@@ -1,4 +1,4 @@
-import {type ISelectOption} from '@/components/base-form/useSelect.ts'
+import {type ISelectOption, selectOptionListToMap} from '@/components/base-form/useSelect.ts'
 import type {IEntity} from '@views/interfaceCommon.ts'
 
 // 用户的信息
@@ -37,6 +37,7 @@ export const sexList: ISelectOption[] = [
     type: 'warning',
   },
 ]
+export const sexListToMap = selectOptionListToMap(sexList)
 
 // 用户状态
 export const userStatusList: ISelectOption[] = [
@@ -51,6 +52,7 @@ export const userStatusList: ISelectOption[] = [
     type: 'error',
   },
 ]
+export const userStatusListToMap = selectOptionListToMap(userStatusList)
 
 // true & false
 export const onlineSelectObject: ISelectOption[] = [
