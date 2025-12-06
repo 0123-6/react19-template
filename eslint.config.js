@@ -56,6 +56,12 @@ export default tseslint.config([
       semi: ['error', 'never'],
       // 👇 对象/数组最后一个元素允许逗号（便于多行编辑）
       'comma-dangle': ['error', 'always-multiline'],
+      // 👇 忽略以 _ 开头的变量和参数未使用警告
+      '@typescript-eslint/no-unused-vars': ['error', {
+        varsIgnorePattern: '^_',
+        argsIgnorePattern: '^_',
+        caughtErrorsIgnorePattern: '^_',
+      }],
     },
   },
 ])
