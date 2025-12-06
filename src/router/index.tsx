@@ -153,7 +153,7 @@ const routes: RouteObject[] = [
       // 首页
       {
         index: true,
-        loader: () => redirect('/index'),
+        loader: () => goFirstRoute(),
       },
       ...menuRouteList,
     ],
@@ -190,5 +190,9 @@ const routes: RouteObject[] = [
     ],
   },
 ]
+
+const goFirstRoute = () => {
+  return redirect('/index')
+}
 
 export const router = createBrowserRouter(routes)
