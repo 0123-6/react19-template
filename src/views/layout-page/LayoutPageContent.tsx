@@ -215,7 +215,7 @@ export default function LayoutPageContent() {
             }}
           >
             {
-              userObject?.permissionList?.includes((matches.at(-1).handle as IRouteHandle).name)
+              userObject?.permissionList?.includes((matches.at(-1).handle as IRouteHandle)?.name)
                 ? <Outlet/>
                 : <span className={'text-[30px] text-warning'}>没有权限</span>
             }
