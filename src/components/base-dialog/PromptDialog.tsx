@@ -10,8 +10,6 @@ export interface IPromptDialog {
   // 要展示的文字内容
   text?: string | number | IPromptDialogTextItem,
   textList?: (string | number | IPromptDialogTextItem)[],
-  // 必须存在
-  cancel?: () => void,
   // 确认按钮
   okButton?: IPromptDialogOkButton,
   // useElFeedback.ts实例,应该是独立的逻辑,不应该依赖fetchObject
@@ -53,7 +51,6 @@ export default function PromptDialog(props: IPromptDialog) {
     text = undefined,
     textList = [] as (string | number | IPromptDialogTextItem)[],
     okButton = {} as IPromptDialogOkButton,
-    cancel,
     fetchObject,
     dialogObject,
     // 按钮是否和fetchObject关联
@@ -98,9 +95,6 @@ export default function PromptDialog(props: IPromptDialog) {
   const onCancel = () => {
     dialogObject.onCancel()
   }
-  const afterClose = () => {
-    cancel?.()
-  }
 
   return (
     <>
@@ -113,7 +107,6 @@ export default function PromptDialog(props: IPromptDialog) {
         destroyOnHidden={true}
         wrapClassName={'hpj'}
         onCancel={onCancel}
-        afterClose={afterClose}
         footer={null}
       >
         <div className={'w-full flex flex-col gap-y-4'}>
