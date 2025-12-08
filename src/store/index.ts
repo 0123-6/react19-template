@@ -2,12 +2,12 @@ import type {IUseSyncExternalStoreProps} from '@/util/hooks/IUseSyncExternalStor
 import type {IUserInfo} from '@views/system-manage/user-manage/userManageCommon.ts'
 import {baseFetch} from '@/util/api.ts'
 
-let userObject: IUserInfo | null = null
-const subSet = new Set<() => void>()
-
 type IProps = IUseSyncExternalStoreProps<IUserInfo | null> & {
   fetch: () => Promise<void>,
 }
+
+let userObject: IUserInfo | null = null
+const subSet = new Set<() => void>()
 
 export const userStore: IProps = {
   subscribe: sub => {
@@ -20,11 +20,9 @@ export const userStore: IProps = {
   getSnapshot: () => userObject,
   set: (newUser: IUserInfo | null) => {
     userObject = newUser
-    queueMicrotask(() => {
-      for (const sub of subSet) {
-        sub()
-      }
-    })
+    for (const sub of subSet) {
+      sub()
+    }
   },
   // 获取用户信息
   fetch: async () => {
