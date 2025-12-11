@@ -25,22 +25,38 @@ dayjs.locale('zh-cn')
 dayjs.extend(quarterOfYear)
 
 // {/*antd包装组件，影响全局antd*/}
+// ReactDOM.createRoot(document.getElementById('app')).render(
+//   <StrictMode>
+//     <ConfigProvider
+//       // 设置antd为中文
+//       locale={zhCN}
+//       // 自定义主题
+//       theme={{
+//         token: {
+//           colorPrimary: '#1677ff',
+//           colorError: '#ff4d4f',
+//         },
+//       }}
+//     >
+//       <RouterProvider router={router}/>
+//     </ConfigProvider>
+//   </StrictMode>,
+// )
+
 ReactDOM.createRoot(document.getElementById('app')).render(
-  <StrictMode>
-    <ConfigProvider
-      // 设置antd为中文
-      locale={zhCN}
-      // 自定义主题
-      theme={{
-        token: {
-          colorPrimary: '#1677ff',
-          colorError: '#ff4d4f',
-        },
-      }}
-    >
-      <RouterProvider router={router}/>
-    </ConfigProvider>
-  </StrictMode>,
+  <ConfigProvider
+    // 设置antd为中文
+    locale={zhCN}
+    // 自定义主题
+    theme={{
+      token: {
+        colorPrimary: '#1677ff',
+        colorError: '#ff4d4f',
+      },
+    }}
+  >
+    <RouterProvider router={router}/>
+  </ConfigProvider>,
 )
 
 
