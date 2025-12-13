@@ -1,0 +1,181 @@
+import {useRef} from 'react'
+import {useResetState} from '@/util/hooks/useResetState.ts'
+import type {IBaseFetch} from '@/util/api.ts'
+import {useBaseFetch} from '@/util/hooks/useBaseFetch.ts'
+import {warningMessage} from '@/util/message.ts'
+import {useAsyncEffect} from '@/util/hooks/useEffectUtil.ts'
+import type {FormInstance} from 'antd'
+
+export type TypeTableSelectType = 'single' | 'batch'
+export type TypeAddOrEdit = 'add' | 'edit'
+
+export interface ITableRef {
+  scrollTo: (
+    config: {
+      index?: number,
+      key?: React.Key,
+      top?: number,
+      offset?: number,
+    }
+  ) => void,
+  nativeElement: HTMLDivElement,
+}
+
+export interface IUseBaseTableProps {
+  // 因为这是要多次执行的,所以不能传递一个一次性值,而是一个函数,获取当时的期待值
+  // 通过接口获取数据时必填
+  fetchOptionFn?: () => IBaseFetch,
+  microTask?: boolean,
+  formObject?:  FormInstance | (() =>  FormInstance)
+}
+
+export const useBaseTable = (props: IUseBaseTableProps) => {
+  const {
+    fetchOptionFn,
+    microTask = true,
+  } = props
+  let formObject: FormInstance
+  if (props.formObject) {
+    formObject = typeof props.formObject === 'function'
+      ? props.formObject()
+      : props.formObject
+  }
+
+  const tableRef = useRef<ITableRef>(null)
+
+  const [total, setTotal, resetTotal] = useResetState(() => 0)
+  const [list, setList, resetList] = useResetState((): any[] => [])
+
+  const [params, setParams, resetParams] = useResetState(() => ({
+    pageNum: 1,
+    pageSize: 10,
+    // 排序属性
+    orderFiled: '',
+    // '', asc升序,desc降序
+    orderStatus: '',
+  }))
+  const changePagination = (pageNum: number, pageSize: number) => {
+    setParams({
+      ...params,
+      pageNum,
+      pageSize,
+    })
+  }
+  useAsyncEffect(async () => {
+    try {
+      if (formObject) {
+        await formObject.validateFields()
+      }
+      fetchTableObject.doFetch()
+    } catch (e) {
+      warningMessage('查询表单校验失败')
+      console.log(e)
+    }
+  }, [params], {
+    immediate: false,
+  })
+
+  const [selectType, setSelectType, resetSelectType] = useResetState((): TypeTableSelectType => 'single')
+  const [selectItem, setSelectItem, resetSelectItem] = useResetState((): any => null)
+  const [selectItemList, setSelectItemList, resetSelectItemList] = useResetState((): any[] => [])
+  const [selectItemKeyList, setSelectItemKeyList, resetSelectItemKeyList] = useResetState((): number[] => [])
+  const tableObjectReset = () => {
+    tableRef.current?.scrollTo?.({
+      top: 0,
+    })
+    resetSelectType()
+    resetSelectItem()
+    resetSelectItemList()
+    resetSelectItemKeyList()
+  }
+
+
+  const solveRawData = (responseData: any) => {
+    if (!responseData) {
+      resetTotal()
+      resetList()
+      return
+    }
+    // 兼容数组类型
+    if (Array.isArray(responseData)) {
+      responseData = {
+        list: responseData,
+        total: responseData.length,
+      }
+    }
+    if (typeof responseData !== 'object') {
+      warningMessage('表格请求接口返回值类型不合法,请检查接口')
+      resetTotal()
+      resetList()
+      return
+    }
+    if (responseData.total == null || responseData.list == null || responseData.total < 0) {
+      resetTotal()
+      resetList()
+      return
+    }
+    if (!Number.isInteger(responseData.total) || !Array.isArray(responseData.list)) {
+      warningMessage('表格请求接口返回值类型不合法,请检查接口')
+      resetTotal()
+      resetList()
+      return
+    }
+
+    // responseData.list = (responseData.list as T[])
+    // .filter(Boolean)
+    // .map((item, index) => ({
+    //   ...transformValue(item, list),
+    // }))
+    setTotal(responseData.total)
+    setList(responseData.list.map((item, index) => ({
+      ...item,
+      index: index + 1 + params.pageSize * (params.pageNum - 1),
+    })))
+  }
+  const fetchTableObject = useBaseFetch({
+    beforeFetchResetFn: tableObjectReset,
+    fetchOptionFn: () => ({
+      ...fetchOptionFn(),
+      mockUrl: 'getTableList',
+      data: {
+        ...params,
+        ...(fetchOptionFn().data),
+      },
+    }),
+    transformResponseDataFn: solveRawData,
+    microTask,
+  })
+
+  return {
+    tableRef,
+
+    total,
+    setTotal,
+    list,
+    setList,
+
+    params,
+    setParams,
+    resetParams,
+    changePagination,
+
+    selectType,
+    setSelectType,
+    resetSelectType,
+    selectItem,
+    setSelectItem,
+    resetSelectItem,
+    selectItemList,
+    setSelectItemList,
+    resetSelectItemList,
+    selectItemKeyList,
+    setSelectItemKeyList,
+    resetSelectItemKeyList,
+    tableObjectReset,
+
+    get isFetching() {
+      return fetchTableObject.isFetching
+    },
+    doFetch: fetchTableObject.doFetch,
+  }
+}
