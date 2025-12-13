@@ -1,7 +1,7 @@
 import {useSelect} from '@/components/base-form/useSelect.ts'
 import {useBaseForm} from '@/components/base-form/useBaseForm.ts'
 import {type TypeAddOrEdit, useBaseTable} from '@/components/base-table/useBaseTable.ts'
-import {Button, Form, Table} from 'antd'
+import {Button, Drawer, Form, Table} from 'antd'
 import BaseFormItemList from '@/components/base-form/BaseFormItemList.tsx'
 import {ReloadOutlined, SearchOutlined} from '@ant-design/icons'
 import {useResetState} from '@/util/hooks/useResetState.ts'
@@ -10,6 +10,7 @@ import type {IUserInfo} from '@views/system-manage/user-manage/userManageCommon.
 import {useBaseFetch} from '@/util/hooks/useBaseFetch.ts'
 import {successMessage} from '@/util/message.ts'
 import PromptDialog from '@/components/base-dialog/PromptDialog.tsx'
+import RoleManageAddAndEditDrawer from '@views/system-manage/role-manage/RoleManageAddAndEditDrawer.tsx'
 
 export default function RoleManage() {
   // 获取全量角色列表
@@ -34,6 +35,7 @@ export default function RoleManage() {
       mockProd: true,
     }),
   })
+
   const formObject = useBaseForm({
     list: [
       {
@@ -269,7 +271,6 @@ export default function RoleManage() {
         loading={tableObject.isFetching}
         scroll={{
           x: 'max-content',
-          y: 300,
         }}
         rowSelection={{
           type: 'checkbox',
@@ -293,6 +294,21 @@ export default function RoleManage() {
         }}
         fetchObject={fetchDeleteRoleObject}
       />
+      <Drawer
+        title={isAddOrEdit === 'add' ? '新增' : '编辑'}
+        open={addOrEditDialogObject.isShow}
+        onClose={addOrEditDialogObject.onCancel}
+        rootClassName={'hpj'}
+        size={500}
+        destroyOnHidden={true}
+      >
+        <RoleManageAddAndEditDrawer
+          onOk={addOrEditDialogObject.onOk}
+          onCancel={addOrEditDialogObject.onCancel}
+          item={tableObject.selectItem}
+          isAddOrEdit={isAddOrEdit}
+        />
+      </Drawer>
     </div>
   )
 }
