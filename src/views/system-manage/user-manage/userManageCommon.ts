@@ -30,12 +30,14 @@ export const sexList: ISelectOption[] = [
     label: '男',
     title: '男',
     value: 'man',
+    key: 'man',
     type: 'primary',
   },
   {
     label: '女',
     title: '女',
     value: 'woman',
+    key: 'woman',
     type: 'warning',
   },
 ]
@@ -47,12 +49,14 @@ export const userStatusList: ISelectOption[] = [
     label: '正常',
     title: '正常',
     value: 'normal',
+    key: 'normal',
     type: 'success',
   },
   {
     label: '禁用',
     title: '禁用',
     value: 'disabled',
+    key: 'disabled',
     type: 'error',
   },
 ]
@@ -64,12 +68,14 @@ export const onlineSelectObject: ISelectOption[] = [
     label: '在线',
     title: '在线',
     value: true,
+    key: true,
     type: 'primary',
   },
   {
     label: '不在线',
     title: '不在线',
     value: false,
+    key: false,
     type: 'text',
   },
 ]
