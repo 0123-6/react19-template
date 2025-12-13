@@ -1,4 +1,4 @@
-import {DatePicker, Form, Input, Radio, Select} from 'antd'
+import {DatePicker, Form, Input, Radio, Select, TreeSelect} from 'antd'
 import {isFalse, isTrue} from '@/util/validator.ts'
 
 export interface IBaseFormItem {
@@ -80,6 +80,18 @@ export default function BaseFormItemList(props: IBaseFormItemList) {
                   showSearch
                   options={item.list}
                   mode={item.multiple ? 'multiple' : undefined}
+                  disabled={isTrue(item.disabled)}
+                />
+              )
+            }
+            {
+              item.type === 'tree-select' && (
+                <TreeSelect
+                  placeholder={item.placeholder ?? `请选择${item.label}`}
+                  allowClear
+                  showSearch
+                  treeData={item.list}
+                  multiple={item.multiple}
                   disabled={isTrue(item.disabled)}
                 />
               )
