@@ -6,6 +6,7 @@ import {warningMessage} from '@/util/message.ts'
 // select的option的标准格式
 export interface ISelectOption {
   label: string,
+  title: string,
   value: string | number | boolean,
   disabled?: boolean,
   children?: ISelectOption[],
@@ -70,6 +71,7 @@ export const useSelect = (props: IUseElSelectProps)
 
     const result: ISelectOption = {
       label: labelFn(item),
+      title: labelFn(item),
       value: item[config.valueName],
       disabled: item[config.disabledName] ?? false,
       children: item[config.childrenName] ?? [],
