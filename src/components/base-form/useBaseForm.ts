@@ -5,7 +5,7 @@ import {warningMessage} from '@/util/message.ts'
 
 export interface IUseBaseFormProps {
   list: IBaseFormItem[],
-  initialValues: Record<string, any>,
+  initialValues?: Record<string, any>,
 }
 
 export const useBaseForm = (props: IUseBaseFormProps) => {
