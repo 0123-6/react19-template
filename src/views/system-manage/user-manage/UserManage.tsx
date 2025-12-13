@@ -451,7 +451,6 @@ export default function UserManage() {
         loading={tableObject.isFetching}
         scroll={{
           x: 'max-content',
-          y: 300,
         }}
         rowSelection={{
           type: 'checkbox',
