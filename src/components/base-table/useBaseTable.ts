@@ -26,13 +26,17 @@ export interface IUseBaseTableProps {
   // 通过接口获取数据时必填
   fetchOptionFn?: () => IBaseFetch,
   microTask?: boolean,
-  formObject?:  FormInstance | (() =>  FormInstance)
+  formObject?:  FormInstance | (() =>  FormInstance),
+  columns: any[],
+  pageSizeOptions?: number[],
 }
 
 export const useBaseTable = (props: IUseBaseTableProps) => {
   const {
     fetchOptionFn,
     microTask = true,
+    columns,
+    pageSizeOptions = [10, 20, 30],
   } = props
   let formObject: FormInstance
   if (props.formObject) {
@@ -79,6 +83,10 @@ export const useBaseTable = (props: IUseBaseTableProps) => {
   const [selectItem, setSelectItem, resetSelectItem] = useResetState((): any => null)
   const [selectItemList, setSelectItemList, resetSelectItemList] = useResetState((): any[] => [])
   const [selectItemKeyList, setSelectItemKeyList, resetSelectItemKeyList] = useResetState((): number[] => [])
+  const onSelectionChange = (selectedRowKeys: any[], selectedRows: any[]) => {
+    setSelectItemKeyList(selectedRowKeys as number[])
+    setSelectItemList(selectedRows)
+  }
   const tableObjectReset = () => {
     tableRef.current?.scrollTo?.({
       top: 0,
@@ -148,6 +156,7 @@ export const useBaseTable = (props: IUseBaseTableProps) => {
 
   return {
     tableRef,
+    columns,
 
     total,
     setTotal,
@@ -158,6 +167,7 @@ export const useBaseTable = (props: IUseBaseTableProps) => {
     setParams,
     resetParams,
     changePagination,
+    pageSizeOptions,
 
     selectType,
     setSelectType,
@@ -171,6 +181,7 @@ export const useBaseTable = (props: IUseBaseTableProps) => {
     selectItemKeyList,
     setSelectItemKeyList,
     resetSelectItemKeyList,
+    onSelectionChange,
     tableObjectReset,
 
     get isFetching() {
