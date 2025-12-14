@@ -45,7 +45,7 @@ const PopoverComp = () => {
       <div className={'w-full p-3 flex items-center gap-x-2 border-b border-disabled'}>
         <div className="w-[48px] shrink-0 h-[48px] rounded-full overflow-hidden">
           <img
-            src="/default_avatar.jpg"
+            src={new URL('/default_avatar.jpg', import.meta.url).href}
             alt=""
           />
         </div>
@@ -139,7 +139,7 @@ export default function LayoutPageContent() {
         {/* 左 */}
         <div className={'flex items-center shrink-0-children'}>
           <img
-            src="/logo.webp"
+            src={new URL('/logo.webp', import.meta.url).href}
             alt=""
             className={'object-cover w-[32px] h-[32px]'}
           />
@@ -167,7 +167,7 @@ export default function LayoutPageContent() {
             <button className="w-[44px] h-[44px] flex justify-center items-center hover:bg-disabled rounded-full">
               <div className="w-[32px] h-[32px] rounded-full overflow-hidden">
                 <img
-                  src="/default_avatar.jpg"
+                  src={new URL('/default_avatar.jpg', import.meta.url).href}
                   alt=""
                 />
               </div>
