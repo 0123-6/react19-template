@@ -6,11 +6,11 @@ import BaseFormItemList from '@/components/base-form/BaseFormItemList.tsx'
 import {ReloadOutlined, SearchOutlined} from '@ant-design/icons'
 import {useResetState} from '@/util/hooks/useResetState.ts'
 import {useFeedback} from '@/components/base-dialog/useFeedback.ts'
-import type {IUserInfo} from '@views/system-manage/user-manage/userManageCommon.ts'
 import {useBaseFetch} from '@/util/hooks/useBaseFetch.ts'
 import {successMessage} from '@/util/message.ts'
 import PromptDialog from '@/components/base-dialog/PromptDialog.tsx'
 import RoleManageAddAndEditDrawer from '@views/system-manage/role-manage/RoleManageAddAndEditDrawer.tsx'
+import type {IRole} from '@views/system-manage/role-manage/roleManageCommon.ts'
 
 export default function RoleManage() {
   // 获取全量角色列表
@@ -60,7 +60,7 @@ export default function RoleManage() {
     ],
   })
 
-  const tableObject = useBaseTable({
+  const tableObject = useBaseTable<IRole>({
     formObject: formObject.form,
     fetchOptionFn: () => ({
       url: 'role/query',
@@ -107,7 +107,7 @@ export default function RoleManage() {
         title: '操作',
         width: 100,
         fixed: 'right',
-        render: (_value, row: IUserInfo) => (
+        render: (_value, row: IRole) => (
           <div className={'w-full flex items-center'}>
             <Button
               color={'primary'}
@@ -157,7 +157,7 @@ export default function RoleManage() {
     setIsAddOrEdit('add')
     addOrEditDialogObject.setIsShow(true)
   }
-  const clickSingleEditButton = (row: IUserInfo) => {
+  const clickSingleEditButton = (row: IRole) => {
     tableObject.setSelectType('single')
     tableObject.setSelectItem(row)
     setIsAddOrEdit('edit')
@@ -166,7 +166,7 @@ export default function RoleManage() {
 
   // 删除
   const deleteDialogObject = useFeedback()
-  const clickSingleDeleteButton = (row: IUserInfo) => {
+  const clickSingleDeleteButton = (row: IRole) => {
     tableObject.setSelectType('single')
     tableObject.setSelectItem(row)
     deleteDialogObject.setIsShow(true)
