@@ -2,6 +2,7 @@ import {createBrowserRouter, redirect, type RouteObject} from 'react-router'
 import {lazy, type ReactElement} from 'react'
 import {HomeOutlined, KeyOutlined, SettingOutlined, TagOutlined, UserOutlined} from '@ant-design/icons'
 import {userStore} from '@/store'
+import {projectConfig} from '../../project.config.ts'
 
 export interface IRouteHandle {
   name: string,
@@ -219,4 +220,6 @@ export const getFirstRoute = () => {
   return path ?? '/index'
 }
 
-export const router = createBrowserRouter(routes)
+export const router = createBrowserRouter(routes, {
+  basename: projectConfig.baseUrl,
+})
