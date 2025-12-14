@@ -103,10 +103,6 @@ export default function PermissionManage() {
     tableObject.setSelectItem(row)
     deleteDialogObject.setIsShow(true)
   }
-  const clickBatchDelete = () => {
-    tableObject.setSelectType('batch')
-    deleteDialogObject.setIsShow(true)
-  }
   const fetchDeleteObject = useBaseFetch({
     fetchOptionFn: () => ({
       url: 'permission/delete',
@@ -146,13 +142,6 @@ export default function PermissionManage() {
           onClick={clickBatchAdd}
         >
           新增
-        </Button>
-        <Button
-          danger
-          disabled={!(tableObject.selectItemList?.length)}
-          onClick={clickBatchDelete}
-        >
-          批量删除
         </Button>
       </div>
       {/* 表格 */}
