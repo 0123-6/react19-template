@@ -84,7 +84,11 @@ export const useSelect = (props: IUseElSelectProps)
       result.children[i] = dfs(result.children[i])
     }
 
-    return result
+    return {
+      ...result,
+      children: result.children.length ? result.children : undefined,
+      isLeaf: !result.children.length,
+    }
   }
 
   const [selectOptionList, setSelectOptionList, resetSelectOptionList] = useResetState((): ISelectOption[] => [])
