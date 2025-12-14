@@ -203,7 +203,7 @@ export default function RoleManage() {
       {/* form表单 */}
       <div className={'rounded bg-[#f6f7fc] p-4 flex flex-col'}>
         {/* 上 */}
-        <Form className="w-full grid grid-cols-4 gap-x-2"
+        <Form className="w-full grid grid-cols-3 gap-x-2"
               autoComplete="off"
               name={formObject.id}
               form={formObject.form}
