@@ -31,7 +31,7 @@ export interface IUseBaseTableProps {
   pageSizeOptions?: number[],
 }
 
-export const useBaseTable = (props: IUseBaseTableProps) => {
+export const useBaseTable = <T extends Record<string, any>>(props: IUseBaseTableProps<T>) => {
   const {
     fetchOptionFn,
     microTask = true,
@@ -48,7 +48,7 @@ export const useBaseTable = (props: IUseBaseTableProps) => {
   const tableRef = useRef<ITableRef>(null)
 
   const [total, setTotal, resetTotal] = useResetState(() => 0)
-  const [list, setList, resetList] = useResetState((): any[] => [])
+  const [list, setList, resetList] = useResetState((): T[] => [])
 
   const [params, setParams, resetParams] = useResetState(() => ({
     pageNum: 1,
@@ -80,11 +80,11 @@ export const useBaseTable = (props: IUseBaseTableProps) => {
   })
 
   const [selectType, setSelectType, resetSelectType] = useResetState((): TypeTableSelectType => 'single')
-  const [selectItem, setSelectItem, resetSelectItem] = useResetState((): any => null)
-  const [selectItemList, setSelectItemList, resetSelectItemList] = useResetState((): any[] => [])
+  const [selectItem, setSelectItem, resetSelectItem] = useResetState((): T => null)
+  const [selectItemList, setSelectItemList, resetSelectItemList] = useResetState((): T[] => [])
   const [selectItemKeyList, setSelectItemKeyList, resetSelectItemKeyList] = useResetState((): number[] => [])
-  const onSelectionChange = (selectedRowKeys: any[], selectedRows: any[]) => {
-    setSelectItemKeyList(selectedRowKeys as number[])
+  const onSelectionChange = (selectedRowKeys: number[], selectedRows: T[]) => {
+    setSelectItemKeyList(selectedRowKeys)
     setSelectItemList(selectedRows)
   }
   const tableObjectReset = () => {
