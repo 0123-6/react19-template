@@ -120,7 +120,7 @@ export default function RoleManageAddAndEditDrawer(props: IProps) {
         loading: props.isAddOrEdit === 'add' ? fetchAdd.isFetching : fetchUpdate.isFetching,
       }}
     >
-      <BaseTitle title={'用户信息'}/>
+      <BaseTitle title={'角色信息'}/>
       <Form className="w-full grid grid-cols-1 gap-y-1"
             autoComplete="off"
             name={formObject.id}
