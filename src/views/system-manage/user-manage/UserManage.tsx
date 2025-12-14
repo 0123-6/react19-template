@@ -98,7 +98,7 @@ export default function UserManage() {
     },
   })
 
-  const tableObject = useBaseTable({
+  const tableObject = useBaseTable<IUserInfo>({
     formObject: formObject.form,
     fetchOptionFn: () => ({
       url: 'user/getUserList',
