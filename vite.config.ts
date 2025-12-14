@@ -151,7 +151,7 @@ const plugins: PluginOption[] = [
     },
   }),
   tailwindcss(),
-  viteExternalsPlugin,
+  // viteExternalsPlugin,
   projectConfig.isUseCdn ? cdnPlugin : undefined,
   {
     name: 'remove-empty-chunks',
