@@ -6,8 +6,9 @@ import {useBaseFetch} from '@/util/hooks/useBaseFetch.ts'
 import {successMessage} from '@/util/message.ts'
 import BaseDrawer from '@/components/base-drawer/BaseDrawer.tsx'
 import BaseTitle from '@/components/base-drawer/BaseTitle.tsx'
-import {Form} from 'antd'
+import {Form, Tree} from 'antd'
 import BaseFormItemList from '@/components/base-form/BaseFormItemList.tsx'
+import {useResetState} from '@/util/hooks/useResetState.ts'
 
 interface IProps {
   onOk: () => void,
@@ -58,6 +59,10 @@ export default function RoleManageAddAndEditDrawer(props: IProps) {
         description: props.item?.description,
       },
   })
+  const [selectPermissionList, setSelectPermissionList, _resetSelectPermissionList] = useResetState((): any[] => props.item?.permissionList ?? [])
+  const onCheckChange = (list: any[]) => {
+    setSelectPermissionList(list)
+  }
   const clickOk = async () => {
     if (!await formObject.validate()) {
       return
@@ -79,7 +84,7 @@ export default function RoleManageAddAndEditDrawer(props: IProps) {
       mockProd: true,
       data: {
         ...formObject.form.getFieldsValue(true),
-        // permissionList: treeInstance.value.getCheckedKeys(),
+        permissionList: selectPermissionList,
       },
     }),
     transformResponseDataFn: () => {
@@ -94,7 +99,7 @@ export default function RoleManageAddAndEditDrawer(props: IProps) {
       mockProd: true,
       data: {
         ...formObject.form.getFieldsValue(true),
-        // permissionList: treeInstance.value.getCheckedKeys(),
+        permissionList: selectPermissionList,
       },
     }),
     transformResponseDataFn: () => {
@@ -135,6 +140,22 @@ export default function RoleManageAddAndEditDrawer(props: IProps) {
       >
         <BaseFormItemList list={formObject.list}/>
       </Form>
+      <div className={'w-full flex'}>
+        <span className="w-[90px] pr-3 text-right text-sm text-text-title">权限信息</span>
+        {
+          allPermissionListSelectObject.data.length && (
+            <Tree
+              checkable
+              treeData={allPermissionListSelectObject.data}
+              autoExpandParent
+              defaultExpandAll
+              checkStrictly
+              checkedKeys={selectPermissionList}
+              onCheck={(e: { checked: any[], halfChecked: any[],})=>onCheckChange(e.checked)}
+            />
+          )
+        }
+      </div>
     </BaseDrawer>
   )
 }
