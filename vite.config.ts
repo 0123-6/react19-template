@@ -151,7 +151,7 @@ const plugins: PluginOption[] = [
     },
   }),
   tailwindcss(),
-  // viteExternalsPlugin,
+  viteExternalsPlugin,
   projectConfig.isUseCdn ? cdnPlugin : undefined,
   {
     name: 'remove-empty-chunks',
@@ -184,6 +184,10 @@ const plugins: PluginOption[] = [
 
 // https://vite.dev/config/
 export default defineConfig({
+  // 默认'/'
+  // 部署到非根路径,需要设置base属性,否则会能找到index.html文件,但是找不到index.html文件
+  // 引用的其它js,css文件,因为默认是/,而实际是/xxx.
+  base: projectConfig.baseUrl,
   plugins,
   // 设置别名，方便文件引用
   resolve: {
@@ -221,8 +225,16 @@ export default defineConfig({
   },
   // 构建配置
   build: {
-    // 只支持最新浏览器
-    target: 'esnext',
+    // 在vite项目中,无需使用babel,因此vite借助esbuild进行语法转换,最低支持es2015(chrome51),
+    // 需要注意的是,esbuild仅仅进行语法转换,而没有polyfill的功能.
+    // 对于更老的版本,使用vite官方插件@itejs/plugin-legacy来进行语法转换和polyfill自动注入
+    // @vitejs/plugin-legacy底层依赖babel.
+    // 2个特殊值,modules,esnext
+    // modules等效于['es2020', 'chrome87'],
+    // esnext为最新JavaScript,即无需任何转换
+    // 其它为自定义类型,可以为string | string[],最低支持es2015(chrome51)
+    // 该模板项目target设置为只支持最新浏览器
+    target: projectConfig.viteConfig.target ?? 'esnext',
     // 自定义底层的 Rollup 打包配置。这与从 Rollup 配置文件导出的选项相同，并将与 Vite 的内部 Rollup 选项合并。
     rollupOptions: {
       // 输出配置

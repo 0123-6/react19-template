@@ -42,8 +42,8 @@ interface IProjectConfig {
 // 项目的配置文件
 export const projectConfig: IProjectConfig = {
   projectName: 'react-template',
-  baseUrl: '/',
-  isUseCdn: false,
+  baseUrl: '/react',
+  isUseCdn: true,
   apiPrefix: {
     DEFAULT: '/api/',
   },
