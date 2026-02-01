@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git -C \"D:\\\\front-end\\\\react-template-project\" status)",
+      "Bash(git -C \"D:\\\\front-end\\\\react-template-project\" log --oneline -5)",
+      "Bash(git -C \"D:\\\\front-end\\\\react-template-project\" add CLAUDE.md)",
+      "Bash(git -C \"D:\\\\front-end\\\\react-template-project\" commit -m \"$\\(cat <<''EOF''\n添加CLAUDE.md文件\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git -C \"D:\\\\front-end\\\\react-template-project\" push)"
+    ]
+  }
+}

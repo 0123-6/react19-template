@@ -1,39 +1,75 @@
 {
   "compilerOptions": {
+    "composite": true,
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+    "baseUrl": ".",
+    "allowJs": true,
     "target": "ES2022",
     "useDefineForClassFields": true,
-    "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "module": "ESNext",
+    "lib": ["ES2022", "DOM", "DOM.Iterable", "dom", "dom.iterable", "esnext"],
     "skipLibCheck": true,
+    "verbatimModuleSyntax": true,
+    "incremental": true,
 
     /* Bundler mode */
-    "moduleResolution": "bundler",
+    "moduleResolution": "Bundler",
     "allowImportingTsExtensions": true,
-    "verbatimModuleSyntax": true,
+    "resolveJsonModule": true,
     "moduleDetection": "force",
+    "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx",
+    // vue项目
+//    "jsx": "preserve",
+    // react项目
+     "jsx": "react-jsx",
 
     /* Linting */
     "strict": false,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true,
-
-    "resolveJsonModule": true,
-    "isolatedModules": true,
     "noImplicitAny": false,
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,            // 推荐开，比单独 allowSyntheticDefaultImports 更干净
+    "noUncheckedSideEffectImports": true,
+    "esModuleInterop": true,
+    "types": ["vue"],
+    "erasableSyntaxOnly": true,
+
 
     "paths": {
       "@/*": ["./src/*"],
       "@views/*": ["./src/views/*"]
     },
+    "allowSyntheticDefaultImports": true,
+    // next项目
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
-  "include": ["src"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "include": [
+    "src",
+    "env.d.ts",
+    "src/**/*",
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "*.ts",
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts",
+    "**/*.mts"
+  ],
+  "references": [
+    { "path": "./tsconfig.node.json" },
+    // nuxt项目
+//    {"path": "./.nuxt/tsconfig.app.json"},
+//    {"path": "./.nuxt/tsconfig.server.json"},
+//    {"path": "./.nuxt/tsconfig.shared.json"},
+//    {"path": "./.nuxt/tsconfig.node.json"}
+  ],
+//  "extends": "@vue/tsconfig/tsconfig.dom.json",
 }
