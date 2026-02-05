@@ -5,31 +5,28 @@ import type {ISelectOption} from '@/components/base-form/useSelect.ts'
 import {errorMessage, successMessage} from '@/util/message.ts'
 
 // 防抖函数
-export function debounce(fn: () => void, delay: number = 1000) {
+export function debounce<T extends (...args: any[]) => any>(fn: T, delay: number = 1000) {
   let timer: ReturnType<typeof setTimeout> | null = null
 
-  return function (this: any, ...args: any[]) {
+  return function (this: any, ...args: Parameters<T>) {
     if (timer) {
       clearTimeout(timer)
-      timer = null
     }
     timer = setTimeout(() => {
       fn.apply(this, args)
-      clearTimeout(timer)
       timer = null
     }, delay)
   }
 }
 
 // 节流函数
-export function throttle(fn: () => void, delay: number = 1000) {
+export function throttle<T extends (...args: any[]) => any>(fn: T, delay: number = 1000) {
   let timer: ReturnType<typeof setTimeout> | null = null
 
-  return function (this: any, ...args: any[]) {
+  return function (this: any, ...args: Parameters<T>) {
     if (!timer) {
       fn.apply(this, args)
       timer = setTimeout(() => {
-        clearTimeout(timer)
         timer = null
       }, delay)
     }
