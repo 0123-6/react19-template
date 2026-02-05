@@ -52,10 +52,10 @@ export const dateShortcutsWeekAndMonthAndYear = [
 ]
 
 // 遍历指定日期段
-export const getDateInRange = (startDate, endDate) => {
+export const getDateInRange = (startDate: string | Date | Dayjs, endDate: string | Date | Dayjs): string[] => {
   const start = dayjs(startDate)
   const end = dayjs(endDate)
-  const dates = []
+  const dates: string[] = []
 
   let current = start
   while (current.isBefore(end) || current.isSame(end, 'day')) {
@@ -68,35 +68,35 @@ export const getDateInRange = (startDate, endDate) => {
 }
 
 // 判断指定日期是否大于今天的日期
-export const isAfterToday = date => {
+export const isAfterToday = (date: string | Date | Dayjs): boolean => {
   return dayjs(date).isAfter(dayjs(), 'day')
 }
 
 // 判断1个日期是否早于另一个日期
-export const dateBeforeAnotherDate = (date1, date2) => {
+export const dateBeforeAnotherDate = (date1: string | Date | Dayjs, date2: string | Date | Dayjs): boolean => {
   return dayjs(date1).isBefore(date2, 'day')
 }
 
 // 获取指定日期n天前的日期
-export const getDateBeforeDay = (date, beforeDayNum) => {
+export const getDateBeforeDay = (date: string | Date | Dayjs, beforeDayNum: number): Dayjs => {
   return dayjs(date).subtract(beforeDayNum, 'day')
 }
 
 // 获取指定日期n天后的日期
-export const getDateAfterDay = (date, afterDayNum) => {
+export const getDateAfterDay = (date: string | Date | Dayjs, afterDayNum: number): Dayjs => {
   return dayjs(date).add(afterDayNum, 'day')
 }
 
 // 设置时分秒
-export const setHms = (date, hour, minute, second) => {
+export const setHms = (date: string | Date | Dayjs, hour: number, minute: number, second: number): Dayjs => {
   return dayjs(date)
-    .set('hour', hour)
-    .set('minute', minute)
-    .set('second', second)
+  .set('hour', hour)
+  .set('minute', minute)
+  .set('second', second)
 }
 
 // 获取当前日期的上1个月的第一天
-export const getBeforeMonthFirstDate = (date) => {
+export const getBeforeMonthFirstDate = (date: string | Date | Dayjs): Dayjs => {
   return dayjs(date).subtract(1, 'month').startOf('month')
 }
 
