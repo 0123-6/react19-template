@@ -191,10 +191,10 @@ export async function baseFetch(props: IBaseFetch)
         }
       } else if (isFile) {
         // 文件类型得到json表示错误
-        errorMessage('文件下载失败: ' + responseData?.msg || responseData?.message || '')
+        errorMessage('文件下载失败: ' + (responseData?.msg || responseData?.message || ''))
         return {
           isOk: false,
-          reason: '文件下载失败: ' + responseData?.msg || responseData?.message || '',
+          reason: '文件下载失败: ' + (responseData?.msg || responseData?.message || ''),
         }
       }
       return {
