@@ -237,7 +237,6 @@ export async function baseFetch(props: IBaseFetch)
     }
   } catch (e) {
     if ((e as Error).name === 'AbortError') {
-      console.log('手动停止的错误')
       return {
         isOk: false,
         reason: 'AbortError',
