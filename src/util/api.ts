@@ -337,3 +337,102 @@ export const transformValue = (rawValue: Record<string, any>, list: IBaseItem[])
     ]),
   )
 }
+
+// SSE 流式请求配置
+export interface IStreamFetchOptions<T = any> {
+  url: string;
+  method?: 'GET' | 'POST';
+  headers?: Record<string, string>;
+  data?: Record<string, any>;
+  signal?: AbortSignal;
+  // 每收到一个数据块时调用
+  onMessage: (data: T) => void;
+  // 自定义结束标记，默认为 '[DONE]'
+  doneMarker?: string;
+}
+
+export interface IStreamFetchResult {
+  // 是否成功完成（正常结束或收到 doneMarker）
+  isOk: boolean;
+  // 失败原因
+  reason?: string;
+}
+
+/**
+ * SSE 流式请求工具函数
+ * 用于处理 Server-Sent Events 格式的流式响应
+ * 数据格式: data: {...}\n\n，以 data: [DONE] 结束
+ */
+export async function streamFetch<T = any>(options: IStreamFetchOptions<T>): Promise<IStreamFetchResult> {
+  const {
+    url,
+    method = 'POST',
+    headers = {},
+    data,
+    signal,
+    onMessage,
+    doneMarker = '[DONE]',
+  } = options
+
+  try {
+    const response = await fetch(url, {
+      method,
+      headers: {
+        'Content-Type': 'application/json',
+        ...headers,
+      },
+      body: data ? JSON.stringify(data) : undefined,
+      signal,
+    })
+
+    if (!response.ok || !response.body) {
+      return {
+        isOk: false,
+        reason: `请求失败: ${response.status}`,
+      }
+    }
+
+    const reader = response.body.getReader()
+    const decoder = new TextDecoder('utf-8')
+    let buffer = ''
+
+    while (true) {
+      const {done, value} = await reader.read()
+      if (done) break
+
+      buffer += decoder.decode(value, {stream: true})
+      const messages = buffer.split('\n\n')
+      buffer = messages.pop() || ''
+
+      for (const msg of messages) {
+        if (!msg) continue
+        // 检查结束标记
+        if (msg === `data: ${doneMarker}`) {
+          return {isOk: true}
+        }
+        // 解析 SSE 数据
+        const dataStr = msg.replace(/^data: /, '')
+        try {
+          const parsedData: T = JSON.parse(dataStr)
+          onMessage(parsedData)
+        } catch {
+          // JSON 解析失败，忽略该消息
+          console.warn('SSE 数据解析失败:', dataStr)
+        }
+      }
+    }
+
+    return {isOk: true}
+  } catch (e) {
+    if ((e as Error).name === 'AbortError') {
+      return {
+        isOk: false,
+        reason: 'AbortError',
+      }
+    }
+    return {
+      isOk: false,
+      reason: (e as Error).message || '网络错误',
+    }
+  }
+}
