@@ -54,6 +54,8 @@ export interface IBaseFetch {
 
   // 返回的是不是文件流
   isFile?: boolean,
+  // 展示错误提示
+  showErrorMessage?: boolean,
 }
 
 export interface IResponseData {
@@ -88,6 +90,7 @@ export async function baseFetch(props: IBaseFetch)
     signal,
     isFormData = false,
     isFile = false,
+    showErrorMessage = true,
   } = props
   let {
     url,
@@ -180,7 +183,9 @@ export async function baseFetch(props: IBaseFetch)
       const responseData: IResponseData = await response.json()
       // 正常情况为fetchApiResponseCodeMap.success数组的一个
       if (!projectConfig.fetchApiResponseCodeMap.success.includes(responseData.code)) {
-        errorMessage(responseData.msg || responseData.message || `${url}接口异常`)
+        if (showErrorMessage) {
+          errorMessage(responseData.msg || responseData.message || `${url}接口异常`)
+        }
         // 账号超时，需要重新登录
         if (projectConfig.fetchApiResponseCodeMap.notLogin.includes(responseData.code)) {
           goLoginPage()
@@ -191,7 +196,9 @@ export async function baseFetch(props: IBaseFetch)
         }
       } else if (isFile) {
         // 文件类型得到json表示错误
-        errorMessage('文件下载失败: ' + (responseData?.msg || responseData?.message || ''))
+        if (showErrorMessage) {
+          errorMessage('文件下载失败: ' + (responseData?.msg || responseData?.message || ''))
+        }
         return {
           isOk: false,
           reason: '文件下载失败: ' + (responseData?.msg || responseData?.message || ''),
@@ -214,7 +221,9 @@ export async function baseFetch(props: IBaseFetch)
       }
       const responseBlob = await response.blob()
       if (responseBlob.size === 0) {
-        errorMessage('文件为空文件,无法下载')
+        if (showErrorMessage) {
+          errorMessage('文件为空文件,无法下载')
+        }
         return {
           isOk: false,
           reason: '文件为空文件,无法下载',
@@ -228,7 +237,9 @@ export async function baseFetch(props: IBaseFetch)
           successMessage('文件下载成功')
         },
         callbackError: text => {
-          errorMessage(text)
+          if (showErrorMessage) {
+            errorMessage(text)
+          }
         },
       })
       return {
