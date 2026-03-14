@@ -19,6 +19,10 @@ export const userStore: IProps = {
   },
   getSnapshot: () => userObject,
   set: (newUser: IUserInfo | null) => {
+    if (userObject === newUser) {
+      return
+    }
+
     userObject = newUser
     for (const sub of subSet) {
       sub()
