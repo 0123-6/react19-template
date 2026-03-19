@@ -1,5 +1,5 @@
 import {defineConfig, type PluginOption} from 'vite'
-import react from '@vitejs/plugin-react'
+import react, { reactCompilerPreset } from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import {compression, defineAlgorithm} from 'vite-plugin-compression2'
 import zlib from 'node:zlib'
@@ -9,6 +9,7 @@ import {projectConfig} from './project.config.ts'
 import {Plugin as cdn} from 'vite-plugin-cdn-import'
 // cdn排除插件
 import { viteExternalsPlugin as viteExternals } from 'vite-plugin-externals'
+import babel from '@rolldown/plugin-babel'
 
 const cdnMap = new Map()
 
@@ -145,10 +146,9 @@ const viteExternalsPlugin = viteExternals({
 // 全部的plugins
 const plugins: PluginOption[] = [
   // vue3的单文件组件支持插件
-  react({
-    babel: {
-      plugins: ['babel-plugin-react-compiler'],
-    },
+  react(),
+  babel({
+    presets: [reactCompilerPreset()],
   }),
   tailwindcss(),
   // viteExternalsPlugin,
