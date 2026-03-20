@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "deploy": "npx tsx scripts/deploy.ts"
   },
   "dependencies": {
     "@ant-design/icons": "^6.1.0",
